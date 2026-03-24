@@ -1,65 +1,154 @@
-import Image from "next/image";
+import { ArrowRight, Gauge, MapPinned, ShoppingBag, Wrench } from "lucide-react";
 
-export default function Home() {
+import { ProductCard } from "@/components/product-card";
+import { Card, LinkButton, SectionHeading } from "@/components/ui";
+import { buildMetadata } from "@/lib/seo";
+import { blogPosts, productFamilies, products, serviceCenters } from "@/lib/site-data";
+
+export const metadata = buildMetadata({
+  title: "Home",
+  path: "/",
+});
+
+export default function HomePage() {
+  const heroHighlights = [
+    {
+      title: "Finder-first journey",
+      description: "Vehicle and service-intent based product recommendation.",
+      Icon: Gauge,
+    },
+    {
+      title: "Branch-aware booking",
+      description: "Connect recommended products to real service-center locations.",
+      Icon: MapPinned,
+    },
+    {
+      title: "Commerce hooks",
+      description: "Pack-size, cart, and pricing placeholders ready for backend wiring.",
+      Icon: ShoppingBag,
+    },
+    {
+      title: "Workshop trust",
+      description: "Service offerings, trust markers, and city-specific branch coverage.",
+      Icon: Wrench,
+    },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="page-shell space-y-10">
+      <section className="hero-panel grid-glow overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="space-y-6">
+            <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
+              Product finder + booking + ecommerce foundation
+            </p>
+            <div className="space-y-4">
+              <h1 className="max-w-4xl font-display text-5xl uppercase leading-none tracking-[0.06em] text-white sm:text-6xl">
+                Precision lubricant discovery for Castrol Georgia.
+              </h1>
+              <p className="max-w-2xl text-base leading-8 text-[var(--muted-foreground)]">
+                A premium automotive platform that connects product compatibility, nearby service centers, online booking, and commerce-ready product detail pages.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <LinkButton href="/finder">Launch product finder</LinkButton>
+              <LinkButton href="/booking" variant="secondary">
+                Book service
+              </LinkButton>
+              <LinkButton href="/products" variant="ghost">
+                Browse catalogue
+              </LinkButton>
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {heroHighlights.map(({ title, description, Icon }) => (
+              <Card key={title} className="space-y-3">
+                <Icon className="h-6 w-6 text-[var(--brand)]" />
+                <h2 className="font-display text-xl uppercase tracking-[0.08em] text-white">
+                  {title}
+                </h2>
+                <p className="text-sm leading-6 text-[var(--muted-foreground)]">{description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <SectionHeading
+          eyebrow="Top product families"
+          title="Catalogue built around real Castrol family structure"
+          description="Seeded from the client-provided Excel family breakdown: EDGE, MAGNATEC, GTX, MAGNATEC Hybrid, Castrol ON, Vecton, CRB, and Transmax."
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {productFamilies.map((family) => (
+            <Card key={family.slug} className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">{family.eyebrow}</p>
+              <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-white">{family.name}</h3>
+              <p className="text-sm leading-6 text-[var(--muted-foreground)]">{family.highlight}</p>
+              <LinkButton href={`/products/families/${family.slug}`} variant="ghost" className="mt-2 px-0 py-0">
+                Explore family <ArrowRight className="ml-2 h-4 w-4" />
+              </LinkButton>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <SectionHeading
+          eyebrow="Featured products"
+          title="Commerce-ready product cards"
+          description="The first pass already supports product detail routes, pack-size modelling, cart hooks, and future pricing-tier separation."
+        />
+        <div className="grid gap-4 lg:grid-cols-3">
+          {products.filter((product) => product.featured).slice(0, 6).map((product) => (
+            <ProductCard key={product.slug} product={product} />
+          ))}
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <Card className="space-y-4">
+          <h2 className="font-display text-3xl uppercase tracking-[0.08em] text-white">
+            Service-center booking CTA
+          </h2>
+          <p className="text-sm leading-7 text-[var(--muted-foreground)]">
+            Initial geography support is prepared for Tbilisi, Kutaisi, Batumi, and Marneuli with trust badges and branch-specific inventory hooks.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {serviceCenters.map((center) => (
+              <div key={center.slug} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">{center.city}</p>
+                <h3 className="mt-2 font-semibold text-white">{center.name}</h3>
+                <p className="mt-2 text-sm text-[var(--muted-foreground)]">{center.openingHours}</p>
+              </div>
+            ))}
+          </div>
+          <LinkButton href="/service-centers" variant="secondary">
+            Explore service centers
+          </LinkButton>
+        </Card>
+        <Card className="space-y-4">
+          <h2 className="font-display text-3xl uppercase tracking-[0.08em] text-white">
+            Content and campaign engine
+          </h2>
+          <p className="text-sm leading-7 text-[var(--muted-foreground)]">
+            Blog and landing-page templates are part of the foundation so SEO and campaign conversion do not arrive as an afterthought.
+          </p>
+          <div className="space-y-3">
+            {blogPosts.map((post) => (
+              <div key={post.slug} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">{post.category}</p>
+                <h3 className="mt-2 font-semibold text-white">{post.title}</h3>
+                <p className="mt-2 text-sm text-[var(--muted-foreground)]">{post.excerpt}</p>
+              </div>
+            ))}
+          </div>
+          <LinkButton href="/blog" variant="ghost">
+            Visit blog
+          </LinkButton>
+        </Card>
+      </section>
     </div>
   );
 }
