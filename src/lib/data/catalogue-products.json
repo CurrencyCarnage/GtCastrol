@@ -1,0 +1,986 @@
+{
+  "generatedFrom": [
+    "C:\\Users\\Houpa\\Desktop\\Bmad\\docs\\Catalogue 2024 - CA.xlsx",
+    "C:\\Users\\Houpa\\Desktop\\Bmad\\docs\\Catalogue 2025 CVO - CA.xlsx"
+  ],
+  "workbooks": [
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheets": [
+        {
+          "name": "EDGE",
+          "rows": 15,
+          "cols": 7,
+          "products": 12
+        },
+        {
+          "name": "MAGNATEC",
+          "rows": 12,
+          "cols": 11,
+          "products": 9
+        },
+        {
+          "name": "GTX",
+          "rows": 12,
+          "cols": 10,
+          "products": 4
+        },
+        {
+          "name": "MAGNATEC Hybrid",
+          "rows": 12,
+          "cols": 10,
+          "products": 2
+        },
+        {
+          "name": "Castrol ON",
+          "rows": 12,
+          "cols": 10,
+          "products": 4
+        }
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheets": [
+        {
+          "name": "Vecton",
+          "rows": 14,
+          "cols": 5,
+          "products": 4
+        },
+        {
+          "name": "CRB",
+          "rows": 9,
+          "cols": 13,
+          "products": 6
+        },
+        {
+          "name": "Transmax",
+          "rows": 16,
+          "cols": 13,
+          "products": 13
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 5W-30 LL",
+      "packs": [
+        "1L",
+        "4L",
+        "5L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C3",
+        "BMW Longlife-04",
+        "MB-Approval 229.31/ 229.51",
+        "Porsche C30",
+        "VW 504 00/ 507 00"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 5W-30 C3",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C3",
+        "API SN/CF",
+        "MB-Approval 229.31/ 229.51",
+        "OPEL OV 040 1547 - D30",
+        "Renault RN 0700 / RN 0710",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: VW 505 00/ 505 01"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 5W-40",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C3",
+        "API SN/CF",
+        "MB-Approval 226.5/ 229.31/ 229.51",
+        "OPEL OV 040 1547-D40",
+        "Porsche A40",
+        "Renault RN 0700 / RN 0710",
+        "VW 505 00/ 505 01",
+        "Meets Fiat 9.55535-S2, Ford WSS-M2C917-A"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 0W-20 C5",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C5, C6",
+        "API SP",
+        "ILSAC GF-6",
+        "GM dexos1™ Gen 3",
+        "Jaguar Land Rover engine oil specification STJLR.03.5006",
+        "MB-Approval 229.71",
+        "OPEL OV0401547 - A20",
+        "Meets Chrysler MS 6395",
+        "Meets Fiat 9.55535-CR1",
+        "Meets Fiat 9.55535-GSX",
+        "Meets Ford WSS-M2C947-A",
+        "Meets Ford WSS-M2C947-B1",
+        "Meets Ford WSS-M2C962-A1"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 0W-30 A3/B4",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SL",
+        "BMW Longlife-01",
+        "MB-Approval 229.5",
+        "Renault RN 0700 / RN 0710",
+        "VW 502 00/ 505 00",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MB 229.3"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 0W-40 A3/B4",
+      "packs": [
+        "1L",
+        "4L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SP",
+        "BMW Longlife-01",
+        "MB-Approval 229.5",
+        "Porsche A40",
+        "Renault RN 0700 / RN0710",
+        "VW 502 00/ 505 00",
+        "Meets Ford WSS-M2C937-A",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MB 229.3"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 10W-60",
+      "packs": [
+        "1L",
+        "4L"
+      ],
+      "specs": [
+        "ACEA A3/B3, A3/B4",
+        "API SN/CF",
+        "Approved for BMW M-Models",
+        "VW 501 01/ 505 00"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE 5W-40 A3/B4",
+      "packs": [
+        "1L",
+        "4L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SP",
+        "BMW Longlife-01",
+        "MB-Approval 229.5",
+        "Porsche A40",
+        "Renault RN 0700 / RN 0710",
+        "VW 502 00/ 505 00",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MB 226.5/ MB 229.3"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE Professional EC 0W-20",
+      "packs": [
+        "1L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C5",
+        "Jaguar Land Rover engine oil specification STJLR.03.5006, STJLR.51.5122"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE Professional E 0W-30",
+      "packs": [
+        "208L"
+      ],
+      "specs": [
+        "ACEA C2",
+        "Jaguar Land Rover engine oil specification STJLR.03.5007"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE Professional C1 5W-30",
+      "packs": [
+        "208L"
+      ],
+      "specs": [
+        "ACEA C1",
+        "Jaguar Land Rover engine oil specification STJLR.03.5005"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "EDGE",
+      "product": "EDGE Professional V 0W-20",
+      "packs": [
+        "208L"
+      ],
+      "specs": [
+        "ACEA C5",
+        "Volvo VCC RBS0-2AE"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-30 AP",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "API SP",
+        "ILSAC GF-6"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-30 DX",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "API SP",
+        "ILSAC GF-6",
+        "Meets Ford WSS-M2C946-A/ WSS-M2C946-B1/ WSS-M2C961-A1",
+        "GM dexos1™ Gen 3"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-30 DX2",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C3",
+        "API SN",
+        "dexos2®*"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-30 A5",
+      "packs": [
+        "1L",
+        "4L",
+        "7L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA A1/B1, A5/B5",
+        "API SN",
+        "ILSAC GF-5",
+        "Meets - Ford WSS-M2C913-C/WSS-M2C913-D"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-20 E",
+      "packs": [
+        "4L"
+      ],
+      "specs": [
+        "ACEA C5",
+        "API SN",
+        "ILSAC GF-5",
+        "Meets Ford WSS-M2C948-B"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-30 C3",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C2, C3",
+        "API SP",
+        "BMW Longlife-04",
+        "OPEL OV 040 1547 - G30/ D30",
+        "Meets Fiat 9.55535-S3",
+        "Meets MB 229.31/ 229.51/ 229.52"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-40 A3/B4",
+      "packs": [
+        "1L",
+        "4L",
+        "5L",
+        "60L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SN",
+        "MB-Approval 226.5/ 229.3/ 229.5",
+        "Renault RN 0700 / RN 0710",
+        "VW 502 00/ 505 00"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 5W-40 C3",
+      "packs": [
+        "1L",
+        "4L",
+        "5L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA C3",
+        "API SN Plus",
+        "BMW Longlife-04",
+        "Meets Fiat 9.55535-S2",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MB 229.31/ 229.51/ 229.52"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC",
+      "product": "Magnatec 10W-40 A/B",
+      "packs": [
+        "1L",
+        "4L",
+        "5L",
+        "60L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SP",
+        "Renault RN 0700 / RN 0710",
+        "VW 501 01/ 505 00",
+        "Meets Fiat 9.55535-D2",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MB 226.5/ 229.3"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "GTX",
+      "product": "GTX 5W-40 A3/B4",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA A3/B4",
+        "API SP",
+        "BMW Longlife-01",
+        "MB-Approval 229.3",
+        "Renault RN 0700 / RN 0710",
+        "VW 502 00 / 505 00"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "GTX",
+      "product": "GTX 5W-30",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "API SP",
+        "ILSAC GF-6"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "GTX",
+      "product": "GTX 10W-40",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "API SL"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "GTX",
+      "product": "GTX RN-SPEC 5W-40 RN 710",
+      "packs": [
+        "4L"
+      ],
+      "specs": [
+        "Renault RN 0710"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC Hybrid",
+      "product": "Magnatec Hybrid 0W-20",
+      "packs": [
+        "1L",
+        "4L",
+        "208L"
+      ],
+      "specs": [
+        "API SP",
+        "ILSAC GF-6"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "MAGNATEC Hybrid",
+      "product": "Magnatec Hybrid 0W-16",
+      "packs": [
+        "1L",
+        "5L"
+      ],
+      "specs": [
+        "API SP",
+        "ILSAC GF-6B"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "Castrol ON",
+      "product": "ON EV Transmission Fluid D1",
+      "packs": [
+        "5L"
+      ],
+      "specs": [
+        "Professional use only"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "Castrol ON",
+      "product": "ON EV Transmission Fluid D2",
+      "packs": [
+        "5L"
+      ],
+      "specs": [
+        "Suitable for use in the following EV transmissions with dry motors:",
+        "Audi Q3 e-tron, Q4 e-tron, Q5 e-tron",
+        "BYD ATTO 3, HAN, DOLPHIN",
+        "Cupra Born",
+        "Hongqi E-HS",
+        "Hycan Z03",
+        "Jaguar i-Pace",
+        "Lixiang One",
+        "Nio EC6, EL6, EL7, ES6, ET5, ET7",
+        "Pininfarina Battista (rear axle)",
+        "Polestar 2",
+        "Rimac Nevera (rear axle)",
+        "Rivian R1S, R1T",
+        "SEAT Mii",
+        "Skoda Citigo-E iV, Enyaq iV",
+        "Smart EQ ForTwo, EQ ForFour",
+        "Volvo XC40 Recharge, C40 Recharge",
+        "VW iD.3, iD.4, iD.5, iD.6, iD.Buzz",
+        "VW e-Up!, e-Golf",
+        "Weltmeister W6",
+        "Xpeng P7, G9"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "Castrol ON",
+      "product": "Castrol ON EV Transmission Fluid W2",
+      "packs": [
+        "5L"
+      ],
+      "specs": []
+    },
+    {
+      "workbook": "Catalogue 2024 - CA.xlsx",
+      "sheet": "Castrol ON",
+      "product": "Castrol ON EV Transmission Fluid W5",
+      "packs": [
+        "5L"
+      ],
+      "specs": []
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Vecton",
+      "product": "Vecton 10W-40 E4/E7",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E4, E7",
+        "API CI-4",
+        "JASO DH-1",
+        "Cummins CES 20077, CES 20078",
+        "DDC Powerguard 93K215",
+        "Deutz DQC III-18",
+        "DTFR 15B120",
+        "Mack EO-N",
+        "MAN M 3277",
+        "MTU Oil Category 3",
+        "RVI RLD-2",
+        "Volvo VDS-3",
+        "Meets Ford WSS-M2C944-A"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Vecton",
+      "product": "Vecton 15W-40 CI-4/E7",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E7",
+        "API CI-4/SL",
+        "JASO DH-1",
+        "CAT ECF-2",
+        "Cummins CES 20077,CES 20078",
+        "DDC Powerguard 93K215",
+        "Deutz DQC III-18",
+        "DTFR 15B110",
+        "Mack EO-M Plus, EO-N",
+        "MTU Oil Category 2",
+        "RVI RLD-2",
+        "Volvo VDS-3",
+        "Meets requirements of MAN M 3275-1"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Vecton",
+      "product": "Vecton Long Drain 5W-30 CK-4/SN",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "API CK-4/SN",
+        "CAT ECF-3",
+        "Cummins CES 20086",
+        "DDC DFS 93K222",
+        "Deutz DQC IV-18 LA",
+        "DTFR 15C110",
+        "Mack EOS-4.5",
+        "RVI RLD-3",
+        "Volvo VDS-4.5",
+        "Meets Ford WSS-M2C213-A1"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Vecton",
+      "product": "Vecton Long Drain 10W-40 E8/E11",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E6, E7, E8, E9, E11",
+        "API CK-4",
+        "JASO DH-2",
+        "CAT ECF-3",
+        "Cummins CES 20086",
+        "DDC DFS 93K222",
+        "Deutz DQC IV-18 LA",
+        "DTFR 15C100, DTFR 15C110, DTFR 15C120",
+        "Mack EOS-4.5",
+        "MAN M 3775",
+        "MTU Oil Category 3.1",
+        "RVI RLD-3",
+        "Volvo CNG, VDS-4.5",
+        "Warranted by Castrol to be completely suitable for use where the following specifications apply: MAN M 3271-1, M 3271-3, M 3477",
+        "IVECO For trucks requiring ACEA E6, E7 and E9",
+        "DAF Meets Euro VI requirements"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB CNG 15W-40 LA",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "API CF"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB Multi 15W-40 CH-4",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "API CH-4"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB Multi 20W-50 CF-4",
+      "packs": [
+        "16L",
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "API CF-4"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB Turbomax 10W-40 CK-4/E11",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E11, E9",
+        "API CK-4",
+        "JASO DH-2",
+        "CAT ECF-3",
+        "Cummins CES 20086",
+        "DDC DFS 93K222",
+        "Deutz DQC III-18 LA",
+        "DTFR 15C100, Mack EOS-4.5",
+        "MAN M 3775",
+        "MTU Oil Category 2.1",
+        "RVI RLD-3",
+        "Volvo VDS-4.5",
+        "Warranted by Castrol to be completely suitable for use in vehicles where the following specifications apply: MAN M 3575"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB Turbomax 10W-40 CI-4/SL/E7",
+      "packs": [
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E7",
+        "API CI-4/SL",
+        "CAT ECF-2",
+        "Cummins CES 20077, CES 20078",
+        "DDC Powerguard 93K215",
+        "Deutz DQC III-18",
+        "DTFR 15B110",
+        "Mack EO-M Plus, EO-N",
+        "MTU Oil Category 2",
+        "RVI RLD-2",
+        "Volvo VDS-3",
+        "Meets requirements of MAN M 3275-1"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "CRB",
+      "product": "CRB Turbomax 15W-40 CI-4/SL/E7",
+      "packs": [
+        "4L",
+        "7L",
+        "18L",
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "ACEA E7",
+        "API CI-4/SL",
+        "CAT ECF-2",
+        "Cummins CES 20077, CES 20078",
+        "DDC Powerguard 93K215",
+        "Deutz DQC III-18",
+        "DTFR 15B110",
+        "Mack EO-M Plus, EO-N",
+        "MTU Oil Category 2",
+        "RVI RLD-2",
+        "Volvo VDS-3",
+        "Meets requirements of MAN M 3275-1"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax ATF DEXRON®-VI MERCON® LV Multivehicle",
+      "packs": [
+        "1L",
+        "5L",
+        "208L"
+      ],
+      "specs": [
+        "GM DEXRON® -VI (T60BF9082)",
+        "Ford MERCON® LV (MLV250301)",
+        "Suitable for use where the following are called for: JASO M315-2013 1A, 1A LV, 2A",
+        "GM DEXRON®-II",
+        "DEXRON®-IID",
+        "DEXRON®-IIE",
+        "DEXRON®-IIIG",
+        "DEXRON®-IIIH",
+        "Ford MERCON®, MERCON® SP",
+        "Aisin Warner JWS 3309 (T-IV)",
+        "JWS 3324 (WS)",
+        "AW-1, AW-2",
+        "ZF LifeguardFluid 5, 6, 6 Plus, 7, 8, 9.",
+        "For full list of applications please refer to Product Data Sheet"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax CVT",
+      "packs": [
+        "1L"
+      ],
+      "specs": [
+        "Suitable for use where the following are called for: Toyota CVT Fluid TC, FE",
+        "Nissan CVT Fluid NS-1, NS-2, NS-3",
+        "MMC DIAQUEEN ATF SP-III, CVT Fluid J1, CVT Fluid J4, CVT Fluid J4+",
+        "Mazda CVTF 3320, Subaru i-CVT Fluid, i-CVT FG, Lineartronic II",
+        "Lineartronic High Torque Chain CVTF",
+        "Daihatsu AMMIX CVT Fluid DC, CVT Fluid DFE",
+        "Suzuki CVT Fluid 3320, Green 1, Green 2, CVTF TC, NS-2",
+        "Honda HCF-2 *",
+        "Hyundai/Kia SP-III, SP-CVT 1",
+        "Chrysler NS-2, CVTF+4",
+        "Mini Cooper EZL799",
+        "Ford CVT23",
+        "MB 236.20",
+        "VW/Audi TL 52180 (G 052 180), TL 52516 (G 052 516)",
+        "Dex CVT",
+        "*Transmax CVT is suitable for use in all of Honda CVTs except 2001-2007 Model Honda Fit/Jazz which are equipped with Starting Clutch."
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Axle EPX 80W-90",
+      "packs": [
+        "1L",
+        "16L",
+        "208L"
+      ],
+      "specs": [
+        "API GL-5",
+        "MAN 342 M2",
+        "ZF TE-ML 05A, 12E, 16B, 17B, 19B, 21A"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Manual 140",
+      "packs": [
+        "1L"
+      ],
+      "specs": [
+        "API GL-4"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Limited Slip LL 75W-140",
+      "packs": [
+        "1L"
+      ],
+      "specs": [
+        "API GL-5",
+        "Approved - MB-Approval 235.61, ZFTE-ML 05C, ZFTE-ML 16G, ZFTE-ML 18, ZFTE-ML 21C",
+        "BMW LS Rear Axles",
+        "Recommended for use in Nissan GTR limited slip rear axles",
+        "*SAE Class according to J306 pre 1998 **"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Universal 75W-90",
+      "packs": [
+        "1L",
+        "20L",
+        "208L"
+      ],
+      "specs": [
+        "API GL-4/5 *SAE Class according to J306 pre 1998"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax ATF DX III Multivehicle",
+      "packs": [
+        "1L",
+        "17L",
+        "208L"
+      ],
+      "specs": [
+        "Allison TES 389, MAN 339 L1, V1, Z1, DTFR 13C170 (MB 236.9), MB-Approval 236.9, Voith H55.6335.xx, Volvo Transmission 97341, ZF TE-ML 04D, ZF TE-ML 14A",
+        "Meets Allison C4, Meets Ford MERCON®, GMDEXRON® -IIIH**,",
+        "Meets Requirements Of - Volvo 97340",
+        "** GM Dexron III(H) supersedes GM Dexron II(D)"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax ATF Dex/Merc Multivehicle",
+      "packs": [
+        "1L",
+        "208L"
+      ],
+      "specs": [
+        "Meets Dexron®-IIIH, Mercon®",
+        "Suitable for use where JASO 1A(03)",
+        "JASO 1A LV(13) is required including:",
+        "Toyota T III, T IV, WS",
+        "Mitsubishi SP II, IIM, III, IV, PA, J3",
+        "Mazda ATF M-III, M-V, FZ",
+        "Honda/Acura DW 1/Z 1",
+        "Nissan Matic D, J, S",
+        "JWS 3314/3317/ 3309",
+        "Suzuki AT Oil 5D06, 2384K",
+        "Isuzu",
+        "Subaru F6",
+        "Red 1",
+        "Daihatsu AMMIX ATF D-III Multi, D3-SP",
+        "Hyundai/Kia SP III, SP IV",
+        "Suitable for use as Power steering fluid",
+        "Suitable for use where Allison C4 is required"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Limited Slip Z 85W-90",
+      "packs": [
+        "20L"
+      ],
+      "specs": [
+        "API GL-5",
+        "ZF TE-ML 05C, 16E, 21C"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Offroad 10W",
+      "packs": [
+        "17L",
+        "208L"
+      ],
+      "specs": [
+        "Approved - ZF - TE-ML 03C",
+        "Meets - CAT TO-4",
+        "Recommended for use in Komatsu Equipment"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Offroad 30",
+      "packs": [
+        "18L",
+        "208L"
+      ],
+      "specs": [
+        "ZF TE-ML 03C, 07F",
+        "Meets CAT TO-4",
+        "Recommended for use in Komatsu Equipment"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Offroad 50",
+      "packs": [
+        "208L"
+      ],
+      "specs": [
+        "Meets CAT TO-4",
+        "Recommended for use in Komatsu Equipment"
+      ]
+    },
+    {
+      "workbook": "Catalogue 2025 CVO - CA.xlsx",
+      "sheet": "Transmax",
+      "product": "Transmax Axle EPX 85W-140",
+      "packs": [
+        "16L",
+        "208L"
+      ],
+      "specs": [
+        "API GL-5",
+        "ZF TE-ML 05A, 12E, 16D, 21A"
+      ]
+    }
+  ]
+}

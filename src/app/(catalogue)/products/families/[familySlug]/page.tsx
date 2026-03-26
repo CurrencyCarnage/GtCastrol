@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ProductCard } from "@/components/product-card";
@@ -34,9 +35,26 @@ export default async function FamilyPage(props: PageProps<"/products/families/[f
 
   return (
     <div className="page-shell space-y-8">
-      <SectionHeading eyebrow={family.eyebrow} title={family.name} description={family.description} />
+      <div className="space-y-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>{" "}
+          &gt;{" "}
+          <Link href="/products" className="hover:underline">
+            Products
+          </Link>{" "}
+          &gt; {family.name}
+        </p>
+        <SectionHeading
+          eyebrow={family.eyebrow}
+          title={family.name}
+          description={family.description}
+          titleClassName="font-sans font-extrabold leading-[0.96] tracking-[0.02em]"
+        />
+      </div>
       <Card>
-        <p className="text-sm leading-7 text-[var(--muted-foreground)]">{family.highlight}</p>
+        <p className="text-sm leading-7 text-white/84">{family.highlight}</p>
       </Card>
       <div className="grid gap-4 lg:grid-cols-3">
         {familyProducts.map((product) => (

@@ -6,16 +6,18 @@ import type { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] backdrop-blur-xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
+  "inline-flex min-h-11 items-center justify-center rounded-[15px] border px-4 py-2.5 text-sm font-semibold uppercase tracking-[0.1em] transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]",
   {
     variants: {
       variant: {
         primary:
-          "border-[rgba(0,91,42,0.9)] bg-[linear-gradient(180deg,#0aa24b,#007a37)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_12px_28px_rgba(0,122,55,0.22)] hover:border-[var(--brand-deep)] hover:brightness-[1.02]",
+          "border-[var(--castrol-green-dark)] bg-[linear-gradient(180deg,var(--castrol-green),var(--castrol-green-dark))] !text-white visited:!text-white hover:!text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_24px_rgba(12,107,52,0.28)] hover:-translate-y-0.5 hover:border-[var(--castrol-green-deep)] hover:bg-[linear-gradient(180deg,#008e3e,#0a5e2f)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_14px_28px_rgba(10,79,43,0.3)]",
         secondary:
-          "border-[rgba(0,91,42,0.18)] bg-[rgba(255,255,255,0.9)] text-[var(--foreground)] shadow-[0_10px_24px_rgba(15,52,33,0.06)] hover:border-[rgba(0,133,63,0.34)] hover:bg-white",
+          "border-[rgba(79,91,83,0.36)] bg-[rgba(247,248,245,0.96)] text-[var(--text-dark)] shadow-[0_4px_12px_rgba(30,42,35,0.08)] hover:border-[rgba(79,91,83,0.52)] hover:bg-white",
+        tertiary:
+          "min-h-0 rounded-md border-transparent bg-transparent px-1.5 py-1 text-[var(--castrol-green-deep)] normal-case font-medium tracking-[0.03em] shadow-none hover:underline hover:underline-offset-4",
         ghost:
-          "border-[rgba(0,91,42,0.14)] bg-[rgba(255,255,255,0.5)] text-[var(--foreground)] hover:border-[rgba(0,133,63,0.28)] hover:bg-white",
+          "border-transparent bg-transparent text-[var(--foreground)] hover:border-[rgba(30,42,35,0.16)] hover:bg-white",
       },
     },
     defaultVariants: { variant: "primary" },
@@ -40,22 +42,32 @@ export function LinkButton({
 
 export function Card({
   className,
+  tone,
   children,
 }: {
   className?: string;
+  tone?: VariantProps<typeof cardVariants>["tone"];
   children: React.ReactNode;
 }) {
-  return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-[1.75rem] border border-[rgba(0,91,42,0.18)] bg-[linear-gradient(180deg,rgba(16,85,44,0.95),rgba(10,63,33,0.98))] p-6 shadow-[0_22px_48px_rgba(11,50,29,0.12)] backdrop-blur-xl [--muted-foreground:rgba(231,242,234,0.78)] before:absolute before:inset-x-8 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.75),rgba(215,25,32,0.6),transparent)] before:content-['']",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn(cardVariants({ tone }), className)}>{children}</div>;
 }
+
+const cardVariants = cva(
+  "relative overflow-hidden rounded-2xl border p-6 transition",
+  {
+    variants: {
+      tone: {
+        brand:
+          "border-[rgba(12,107,52,0.38)] bg-[linear-gradient(180deg,rgba(16,95,49,0.95),rgba(10,79,43,0.98))] shadow-[0_22px_48px_rgba(11,50,29,0.16)] [--muted-foreground:rgba(231,242,234,0.78)] before:absolute before:inset-x-8 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.75),rgba(214,31,38,0.6),transparent)] before:content-['']",
+        surface:
+          "border-[rgba(30,42,35,0.12)] bg-white shadow-[0_10px_26px_rgba(30,42,35,0.08)] hover:shadow-[0_16px_34px_rgba(30,42,35,0.12)]",
+        panel:
+          "border-[rgba(30,42,35,0.14)] bg-[var(--off-white)] shadow-[0_8px_20px_rgba(30,42,35,0.06)]",
+      },
+    },
+    defaultVariants: { tone: "brand" },
+  },
+);
 
 export function Badge({
   className,
@@ -67,7 +79,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border border-[rgba(0,91,42,0.14)] bg-[rgba(255,255,255,0.82)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--brand-deep)] shadow-[0_8px_16px_rgba(11,50,29,0.05)]",
+        "inline-flex items-center rounded-full border border-[rgba(30,42,35,0.16)] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--castrol-green-deep)] shadow-[0_6px_14px_rgba(30,42,35,0.05)]",
         className,
       )}
     >
@@ -77,7 +89,7 @@ export function Badge({
 }
 
 const fieldBase =
-  "w-full rounded-[1.35rem] border border-[rgba(0,91,42,0.16)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(245,250,241,0.96))] px-4 py-3 text-sm text-[var(--foreground)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] transition placeholder:text-[rgba(47,79,58,0.48)] focus:border-[var(--brand)] focus:shadow-[0_0_0_3px_rgba(0,133,63,0.12)] disabled:cursor-not-allowed disabled:opacity-45";
+  "w-full rounded-xl border border-[rgba(30,42,35,0.16)] bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[rgba(79,91,83,0.74)] focus:border-[var(--brand)] focus:shadow-[0_0_0_3px_rgba(0,154,68,0.14)] disabled:cursor-not-allowed disabled:opacity-45";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={cn(fieldBase, props.className)} />;
@@ -96,19 +108,21 @@ export function SectionHeading({
   eyebrow,
   title,
   description,
+  titleClassName,
 }: {
   eyebrow: string;
   title: string;
   description: string;
+  titleClassName?: string;
 }) {
   return (
     <div className="max-w-3xl space-y-4">
-      <Badge>{eyebrow}</Badge>
-      <div className="space-y-3">
-        <h2 className="font-display text-3xl uppercase tracking-[0.08em] text-[var(--foreground)] sm:text-4xl">
+      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--castrol-red)]">{eyebrow}</p>
+      <div className="space-y-2">
+        <h2 className={cn("font-display text-3xl uppercase leading-[0.98] tracking-[0.06em] text-[var(--foreground)] sm:text-4xl", titleClassName)}>
           {title}
         </h2>
-        <p className="text-base leading-7 text-[var(--muted-foreground)]">{description}</p>
+        <p className="max-w-2xl text-sm leading-7 text-[var(--muted-foreground)] sm:text-base">{description}</p>
       </div>
     </div>
   );

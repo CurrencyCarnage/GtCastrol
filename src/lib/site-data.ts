@@ -5,11 +5,13 @@ import type {
   Product,
   ProductCategory,
   ProductFamily,
+  ProductSegment,
   ServiceCenter,
   VehicleMake,
   VehicleModel,
   VehicleNeed,
 } from "@/types/domain";
+import catalogueProductsData from "@/lib/data/catalogue-products.json";
 
 export const productCategories: ProductCategory[] = [
   {
@@ -46,194 +48,177 @@ export const productFamilies: ProductFamily[] = [
   { id: "fam-transmax", slug: "transmax", categorySlug: "commercial-and-driveline", name: "Transmax", eyebrow: "Transmission care", description: "Driveline and ATF family for gearbox, axle, and transmission service.", highlight: "Strong bridge between finder, booking, and cart upsell." },
 ];
 
-export const products: Product[] = [
+const familySheetMap: Record<
+  string,
   {
-    id: "prod-edge-5w30-ll",
-    slug: "edge-5w-30-ll",
-    familySlug: "edge",
-    categorySlug: "engine-oils",
-    name: "EDGE 5W-30 LL",
-    headline: "Premium synthetic protection for modern European passenger vehicles.",
-    description: "Derived from the client catalogue family structure and positioned as a premium, OE-grade product detail anchor.",
-    segment: "passenger",
-    featured: true,
-    applications: ["Premium passenger vehicles", "Long-life service packages", "Workshop premium upsell"],
-    tags: ["ACEA C3", "BMW Longlife-04", "VW 504 00 / 507 00"],
-    packSizes: [
-      { id: "edge-1l", label: "1L", volumeLiters: 1, sku: "EDGE-530LL-1", priceLabel: "From 39 GEL", inventoryStatus: "in-stock" },
-      { id: "edge-4l", label: "4L", volumeLiters: 4, sku: "EDGE-530LL-4", priceLabel: "From 129 GEL", inventoryStatus: "in-stock" },
-      { id: "edge-5l", label: "5L", volumeLiters: 5, sku: "EDGE-530LL-5", priceLabel: "From 149 GEL", inventoryStatus: "limited" },
-    ],
-    specs: [
-      { label: "ACEA", value: "C3" },
-      { label: "BMW", value: "Longlife-04" },
-      { label: "VW", value: "504 00 / 507 00" },
-      { label: "Porsche", value: "C30" },
-    ],
-  },
-  {
-    id: "prod-magnatec-5w30-dx",
-    slug: "magnatec-5w-30-dx",
-    familySlug: "magnatec",
-    categorySlug: "engine-oils",
-    name: "MAGNATEC 5W-30 DX",
-    headline: "Daily-driver protection tuned for urban stop-start traffic.",
-    description: "Passenger range positioned around real-world city use and strong workshop recommendation logic.",
-    segment: "passenger",
-    featured: true,
-    applications: ["City driving", "Routine servicing", "Ford and GM-aligned applications"],
-    tags: ["API SP", "ILSAC GF-6", "dexos1 Gen 3"],
-    packSizes: [
-      { id: "mag-1l", label: "1L", volumeLiters: 1, sku: "MAG-DX-1", priceLabel: "From 31 GEL", inventoryStatus: "in-stock" },
-      { id: "mag-4l", label: "4L", volumeLiters: 4, sku: "MAG-DX-4", priceLabel: "From 102 GEL", inventoryStatus: "in-stock" },
-      { id: "mag-5l", label: "5L", volumeLiters: 5, sku: "MAG-DX-5", priceLabel: "From 119 GEL", inventoryStatus: "in-stock" },
-    ],
-    specs: [
-      { label: "API", value: "SP" },
-      { label: "ILSAC", value: "GF-6" },
-      { label: "GM", value: "dexos1 Gen 3" },
-      { label: "Ford", value: "WSS-M2C946-A/B1" },
-    ],
-  },
-  {
-    id: "prod-gtx-5w40",
-    slug: "gtx-5w-40-a3-b4",
-    familySlug: "gtx",
-    categorySlug: "engine-oils",
-    name: "GTX 5W-40 A3/B4",
-    headline: "Reliable engine-oil option for broad passenger-car maintenance.",
-    description: "Accessible product family built to support entry-level ecommerce and service-center upgrades.",
-    segment: "passenger",
-    featured: false,
-    applications: ["Independent workshop service", "Everyday passenger-car maintenance"],
-    tags: ["ACEA A3/B4", "API SP", "MB 229.3"],
-    packSizes: [
-      { id: "gtx-1l", label: "1L", volumeLiters: 1, sku: "GTX-540-1", priceLabel: "From 25 GEL", inventoryStatus: "in-stock" },
-      { id: "gtx-4l", label: "4L", volumeLiters: 4, sku: "GTX-540-4", priceLabel: "From 89 GEL", inventoryStatus: "in-stock" },
-      { id: "gtx-5l", label: "5L", volumeLiters: 5, sku: "GTX-540-5", priceLabel: "From 103 GEL", inventoryStatus: "limited" },
-    ],
-    specs: [
-      { label: "ACEA", value: "A3/B4" },
-      { label: "API", value: "SP" },
-      { label: "VW", value: "502 00 / 505 00" },
-    ],
-  },
-  {
-    id: "prod-hybrid",
-    slug: "magnatec-hybrid-0w-20",
-    familySlug: "magnatec-hybrid",
-    categorySlug: "ev-and-hybrid-fluids",
-    name: "MAGNATEC Hybrid 0W-20",
-    headline: "Hybrid-focused engine oil for low-viscosity service plans.",
-    description: "Supports the hybrid branch of the finder and booking journeys without hardcoding the logic into UI components.",
-    segment: "ev",
-    featured: true,
-    applications: ["Hybrid passenger vehicles", "Low-viscosity oil service", "Specialist maintenance upsell"],
-    tags: ["API SP", "ILSAC GF-6"],
-    packSizes: [
-      { id: "hybrid-1l", label: "1L", volumeLiters: 1, sku: "HYB-020-1", priceLabel: "From 34 GEL", inventoryStatus: "in-stock" },
-      { id: "hybrid-4l", label: "4L", volumeLiters: 4, sku: "HYB-020-4", priceLabel: "From 115 GEL", inventoryStatus: "limited" },
-    ],
-    specs: [
-      { label: "API", value: "SP" },
-      { label: "ILSAC", value: "GF-6" },
-    ],
-  },
-  {
-    id: "prod-on-d2",
-    slug: "castrol-on-ev-transmission-fluid-d2",
-    familySlug: "castrol-on",
-    categorySlug: "ev-and-hybrid-fluids",
-    name: "Castrol ON EV Transmission Fluid D2",
-    headline: "EV driveline fluid path for future electrified service operations.",
-    description: "Structured as a special-order product to reflect realistic first-pass availability and branch-routing behavior.",
-    segment: "ev",
-    featured: true,
-    applications: ["EV transmission service", "Electrified workshop offering"],
-    tags: ["EV", "Transmission", "Special order"],
-    packSizes: [{ id: "on-1l", label: "1L", volumeLiters: 1, sku: "ON-D2-1", priceLabel: "Request quote", inventoryStatus: "special-order" }],
-    specs: [
-      { label: "Use case", value: "EV transmission fluid" },
-      { label: "Availability", value: "Professional use / special order" },
-    ],
-  },
-  {
-    id: "prod-vecton",
-    slug: "vecton-10w-40-e4-e7",
-    familySlug: "vecton",
-    categorySlug: "commercial-and-driveline",
-    name: "Vecton 10W-40 E4/E7",
-    headline: "Fleet-first heavy-duty diesel engine protection.",
-    description: "Anchors the B2B and heavy-duty branch of the platform with bulk-pack and workshop-led buying logic.",
-    segment: "commercial",
-    featured: true,
-    applications: ["Fleet maintenance", "Heavy-duty diesel service", "Bulk workshop supply"],
-    tags: ["ACEA E4/E7", "API CI-4", "20L / 208L"],
-    packSizes: [
-      { id: "vecton-20l", label: "20L", volumeLiters: 20, sku: "VEC-1040-20", priceLabel: "Workshop quote", inventoryStatus: "in-stock" },
-      { id: "vecton-208l", label: "208L", volumeLiters: 208, sku: "VEC-1040-208", priceLabel: "Bulk quote", inventoryStatus: "limited" },
-    ],
-    specs: [
-      { label: "ACEA", value: "E4 / E7" },
-      { label: "API", value: "CI-4" },
-      { label: "OEMs", value: "Cummins, Volvo, DTFR" },
-    ],
-  },
-  {
-    id: "prod-crb",
-    slug: "crb-cng-15w-40-la",
-    familySlug: "crb",
-    categorySlug: "commercial-and-driveline",
-    name: "CRB CNG 15W-40 LA",
-    headline: "Commercial gas-engine lubrication for specialist fleet cases.",
-    description: "Provides a clear commercial edge case for the product finder and branch inventory model.",
-    segment: "commercial",
-    featured: false,
-    applications: ["CNG vehicles", "Municipal fleets", "Industrial transport"],
-    tags: ["API CF", "Commercial"],
-    packSizes: [
-      { id: "crb-4l", label: "4L", volumeLiters: 4, sku: "CRB-CNG-4", priceLabel: "From 128 GEL", inventoryStatus: "limited" },
-      { id: "crb-16l", label: "16L", volumeLiters: 16, sku: "CRB-CNG-16", priceLabel: "Workshop quote", inventoryStatus: "in-stock" },
-    ],
-    specs: [{ label: "API", value: "CF" }],
-  },
-  {
-    id: "prod-transmax",
-    slug: "transmax-atf-dexron-vi-mercon-lv-multivehicle",
-    familySlug: "transmax",
-    categorySlug: "commercial-and-driveline",
-    name: "Transmax ATF DEXRON VI MERCON LV Multivehicle",
-    headline: "Multi-vehicle ATF built for gearbox and driveline service upsell.",
-    description: "Cross-segment product that ties catalogue, service booking, and ecommerce structure together.",
-    segment: "driveline",
-    featured: true,
-    applications: ["Automatic transmission service", "Passenger and commercial driveline maintenance"],
-    tags: ["DEXRON VI", "MERCON LV", "Multivehicle"],
-    packSizes: [
-      { id: "trans-1l", label: "1L", volumeLiters: 1, sku: "TMX-ATF-1", priceLabel: "From 44 GEL", inventoryStatus: "in-stock" },
-      { id: "trans-4l", label: "4L", volumeLiters: 4, sku: "TMX-ATF-4", priceLabel: "From 149 GEL", inventoryStatus: "in-stock" },
-      { id: "trans-20l", label: "20L", volumeLiters: 20, sku: "TMX-ATF-20", priceLabel: "Workshop quote", inventoryStatus: "limited" },
-    ],
-    specs: [
-      { label: "GM", value: "DEXRON VI" },
-      { label: "Ford", value: "MERCON LV" },
-    ],
-  },
-];
+    familySlug: string;
+    categorySlug: Product["categorySlug"];
+    segment: ProductSegment;
+  }
+> = {
+  EDGE: { familySlug: "edge", categorySlug: "engine-oils", segment: "passenger" },
+  MAGNATEC: { familySlug: "magnatec", categorySlug: "engine-oils", segment: "passenger" },
+  GTX: { familySlug: "gtx", categorySlug: "engine-oils", segment: "passenger" },
+  "MAGNATEC HYBRID": { familySlug: "magnatec-hybrid", categorySlug: "ev-and-hybrid-fluids", segment: "ev" },
+  "CASTROL ON": { familySlug: "castrol-on", categorySlug: "ev-and-hybrid-fluids", segment: "ev" },
+  VECTON: { familySlug: "vecton", categorySlug: "commercial-and-driveline", segment: "commercial" },
+  CRB: { familySlug: "crb", categorySlug: "commercial-and-driveline", segment: "commercial" },
+  TRANSMAX: { familySlug: "transmax", categorySlug: "commercial-and-driveline", segment: "driveline" },
+};
+
+const featuredProductSlugs = new Set([
+  "edge-5w-30-ll",
+  "magnatec-5w-30-dx",
+  "gtx-5w-40-a3-b4",
+  "magnatec-hybrid-0w-20",
+  "castrol-on-ev-transmission-fluid-d2",
+  "vecton-10w-40-e4-e7",
+  "crb-cng-15w-40-la",
+  "transmax-atf-dexron-vi-mercon-lv-multivehicle",
+]);
+
+const productSlugOverrides: Record<string, string> = {
+  "on ev transmission fluid d2": "castrol-on-ev-transmission-fluid-d2",
+  "magnatec hybrid 0w-20": "magnatec-hybrid-0w-20",
+  "magnatec 5w-30 dx": "magnatec-5w-30-dx",
+  "edge 5w-30 ll": "edge-5w-30-ll",
+  "gtx 5w-40 a3/b4": "gtx-5w-40-a3-b4",
+  "vecton 10w-40 e4/e7": "vecton-10w-40-e4-e7",
+  "crb cng 15w-40 la": "crb-cng-15w-40-la",
+  "transmax atf dexron-vi mercon lv multivehicle": "transmax-atf-dexron-vi-mercon-lv-multivehicle",
+};
+
+const segmentApplicationsMap: Record<ProductSegment, string[]> = {
+  passenger: ["Passenger car maintenance", "Routine oil-change operations"],
+  commercial: ["Fleet maintenance", "Heavy-duty workshop service"],
+  driveline: ["Transmission service operations", "Driveline fluid maintenance"],
+  ev: ["Hybrid and EV service pathways", "Electrified driveline maintenance"],
+};
+
+type CatalogueRecord = {
+  workbook: string;
+  sheet: string;
+  product: string;
+  packs: string[];
+  specs: string[];
+};
+
+const catalogueRecords = (catalogueProductsData.products as CatalogueRecord[]).filter((record) =>
+  Boolean(familySheetMap[normalizeFamilyKey(record.sheet)]),
+);
+
+export const products: Product[] = buildProductsFromCatalogue(catalogueRecords);
+
+function buildProductsFromCatalogue(records: CatalogueRecord[]): Product[] {
+  const productMap = new Map<string, Product>();
+
+  for (const record of records) {
+    const key = normalizeFamilyKey(record.sheet);
+    const familyConfig = familySheetMap[key];
+
+    if (!familyConfig) {
+      continue;
+    }
+
+    const productName = normalizeProductName(record.product, familyConfig.familySlug);
+    const normalizedNameKey = productName.toLowerCase().replace(/\s+/g, " ").trim();
+    const slug = productSlugOverrides[normalizedNameKey] ?? slugify(productName);
+    const tags = record.specs.slice(0, 3);
+
+    const packSizes = record.packs.map((packLabel) => {
+      const volumeLiters = Number.parseInt(packLabel.replace(/[^0-9]/g, ""), 10);
+      const inventoryStatus =
+        Number.isFinite(volumeLiters) && volumeLiters >= 200 ? "limited" : "in-stock";
+
+      return {
+        id: `${slug}-${packLabel.toLowerCase()}`,
+        label: packLabel,
+        volumeLiters: Number.isFinite(volumeLiters) ? volumeLiters : 1,
+        sku: `${familyConfig.familySlug.toUpperCase()}-${slugify(packLabel).toUpperCase()}`,
+        priceLabel: Number.isFinite(volumeLiters) && volumeLiters >= 16 ? "Workshop quote" : "Request quote",
+        inventoryStatus,
+      } as const;
+    });
+
+    const product: Product = {
+      id: `prod-${slug}`,
+      slug,
+      familySlug: familyConfig.familySlug,
+      categorySlug: familyConfig.categorySlug,
+      name: productName,
+      headline: `${record.sheet} catalogue product for ${segmentLabel(familyConfig.segment)} service and maintenance.`,
+      description: `Imported from ${record.workbook} / ${record.sheet} worksheet to keep the live catalogue aligned with source files.`,
+      segment: familyConfig.segment,
+      featured: featuredProductSlugs.has(slug),
+      applications: segmentApplicationsMap[familyConfig.segment],
+      tags,
+      packSizes,
+      specs: record.specs.map((value, index) => ({
+        label: `Spec ${index + 1}`,
+        value,
+      })),
+    };
+
+    productMap.set(slug, product);
+  }
+
+  return Array.from(productMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function normalizeFamilyKey(value: string) {
+  return value.trim().toUpperCase();
+}
+
+function normalizeProductName(value: string, familySlug: string) {
+  if (familySlug === "castrol-on" && !value.toUpperCase().startsWith("CASTROL ON")) {
+    return `Castrol ${value}`.replace(/\s+/g, " ").trim();
+  }
+
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function segmentLabel(segment: ProductSegment) {
+  const labels: Record<ProductSegment, string> = {
+    passenger: "passenger",
+    commercial: "commercial",
+    driveline: "driveline",
+    ev: "hybrid and EV",
+  };
+
+  return labels[segment];
+}
 
 export const vehicleMakes: VehicleMake[] = [
+  { id: "make-audi", slug: "audi", name: "Audi" },
+  { id: "make-byd", slug: "byd", name: "BYD" },
   { id: "make-toyota", slug: "toyota", name: "Toyota" },
   { id: "make-bmw", slug: "bmw", name: "BMW" },
   { id: "make-ford", slug: "ford", name: "Ford" },
   { id: "make-mercedes", slug: "mercedes-benz", name: "Mercedes-Benz" },
+  { id: "make-volkswagen", slug: "volkswagen", name: "Volkswagen" },
 ];
 
 export const vehicleModels: VehicleModel[] = [
+  { id: "model-audi-q5", makeSlug: "audi", slug: "q5", name: "Q5", yearRange: "2020-2026" },
+  { id: "model-byd-atto-3", makeSlug: "byd", slug: "atto-3", name: "ATTO 3", yearRange: "2022-2026" },
   { id: "model-corolla", makeSlug: "toyota", slug: "corolla", name: "Corolla", yearRange: "2019-2026" },
   { id: "model-rav4-hybrid", makeSlug: "toyota", slug: "rav4-hybrid", name: "RAV4 Hybrid", yearRange: "2019-2026" },
   { id: "model-x5", makeSlug: "bmw", slug: "x5", name: "X5", yearRange: "2019-2026" },
+  { id: "model-bronco", makeSlug: "ford", slug: "bronco", name: "Bronco", yearRange: "2021-2026" },
   { id: "model-focus", makeSlug: "ford", slug: "focus", name: "Focus", yearRange: "2018-2026" },
   { id: "model-actros", makeSlug: "mercedes-benz", slug: "actros", name: "Actros", yearRange: "2019-2026" },
+  { id: "model-id4", makeSlug: "volkswagen", slug: "id-4", name: "ID.4", yearRange: "2021-2026" },
+  { id: "model-golf", makeSlug: "volkswagen", slug: "golf", name: "Golf", yearRange: "2018-2026" },
 ];
 
 export const vehicleNeeds: VehicleNeed[] = [

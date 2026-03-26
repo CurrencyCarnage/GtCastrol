@@ -1,307 +1,465 @@
 "use client";
 
-import { Check, ChevronDown } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { ArrowRight, CarFront, Droplet, IdCard, Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 
 import { ComingSoonDialog } from "@/components/coming-soon-dialog";
-import { Button, Card, LinkButton } from "@/components/ui";
+import { Button, Card, Input, LinkButton, Select } from "@/components/ui";
 import { trackEvent } from "@/lib/analytics";
-import { products, vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
+import { products, serviceCenters, vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
-interface FinderOption {
-  value: string;
-  label: string;
-  description?: string;
+type FinderMode = "vehicle" | "plate" | "fluid";
+type FinderVehicleType = "cars-light-duty-trucks" | "commercial-fleet" | "hybrid-ev";
+
+interface FinderResult {
+  id: string;
+  vehicleType: FinderVehicleType;
+  makeSlug: string;
+  makeName: string;
+  modelSlug: string;
+  modelName: string;
+  yearRangeLabel: string;
+  years: number[];
+  needSlug: string;
+  needName: string;
+  centerSlug: string;
+  centerName: string;
+  centerCity: string;
+  serviceName: string;
+  productSlug: string;
+  productName: string;
 }
 
+const modeOptions: Array<{ value: FinderMode; label: string; Icon: typeof CarFront }> = [
+  { value: "vehicle", label: "Vehicle & Equipment", Icon: CarFront },
+  { value: "plate", label: "License Plate Search", Icon: IdCard },
+  { value: "fluid", label: "Fluid & Oil Search", Icon: Droplet },
+];
+
+const vehicleTypeOptions: Array<{ value: FinderVehicleType; label: string }> = [
+  { value: "cars-light-duty-trucks", label: "Cars & Light Duty Trucks" },
+  { value: "commercial-fleet", label: "Commercial / Fleet" },
+  { value: "hybrid-ev", label: "Hybrid / EV" },
+];
+
+const modelVehicleTypeMap: Record<string, FinderVehicleType> = {
+  actros: "commercial-fleet",
+  bronco: "cars-light-duty-trucks",
+  "rav4-hybrid": "hybrid-ev",
+  "id-4": "hybrid-ev",
+  "atto-3": "hybrid-ev",
+};
+
+const vehicleTypeNeedMap: Record<FinderVehicleType, string[]> = {
+  "cars-light-duty-trucks": ["engine-oil-change", "transmission-service"],
+  "commercial-fleet": ["fleet-heavy-duty", "transmission-service"],
+  "hybrid-ev": ["hybrid-maintenance", "transmission-service"],
+};
+
+const needToServiceSlug: Record<string, string> = {
+  "engine-oil-change": "oil-change",
+  "transmission-service": "gearbox-service",
+  "hybrid-maintenance": "hybrid-service",
+  "fleet-heavy-duty": "fleet-service",
+};
+
+const needToFamilySlugs: Record<string, string[]> = {
+  "engine-oil-change": ["edge", "magnatec", "gtx"],
+  "transmission-service": ["transmax", "castrol-on"],
+  "hybrid-maintenance": ["magnatec-hybrid", "castrol-on", "transmax"],
+  "fleet-heavy-duty": ["vecton", "crb", "transmax"],
+};
+
 export function FinderWizard() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("query")?.trim() ?? "";
+  const [mode, setMode] = useState<FinderMode>("vehicle");
+  const [vehicleType, setVehicleType] = useState<FinderVehicleType>("cars-light-duty-trucks");
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [makeSlug, setMakeSlug] = useState("");
   const [modelSlug, setModelSlug] = useState("");
+  const [year, setYear] = useState("");
   const [needSlug, setNeedSlug] = useState("");
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
 
-  const filteredModels = vehicleModels.filter((model) => model.makeSlug === makeSlug);
+  const allFinderResults = useMemo(() => buildFinderResults(), []);
 
-  const { data: recommendations } = useQuery({
-    queryKey: ["finder", makeSlug, modelSlug, needSlug],
-    enabled: Boolean(makeSlug && modelSlug && needSlug),
-    queryFn: async () => {
-      trackEvent({ name: "finder_started", payload: { makeSlug, modelSlug, needSlug } });
+  const availableMakes = useMemo(() => {
+    const makeSlugs = new Set(
+      vehicleModels
+        .filter((model) => getModelVehicleType(model.slug) === vehicleType)
+        .map((model) => model.makeSlug),
+    );
 
-      const map: Record<string, string[]> = {
-        "engine-oil-change": ["edge-5w-30-ll", "magnatec-5w-30-dx", "gtx-5w-40-a3-b4"],
-        "transmission-service": [
-          "transmax-atf-dexron-vi-mercon-lv-multivehicle",
-          "castrol-on-ev-transmission-fluid-d2",
-        ],
-        "hybrid-maintenance": ["magnatec-hybrid-0w-20", "castrol-on-ev-transmission-fluid-d2"],
-        "fleet-heavy-duty": ["vecton-10w-40-e4-e7", "crb-cng-15w-40-la"],
-      };
+    return vehicleMakes.filter((make) => makeSlugs.has(make.slug));
+  }, [vehicleType]);
 
-      const matched = products.filter((product) => map[needSlug]?.includes(product.slug));
+  const availableModels = useMemo(() => {
+    return vehicleModels.filter(
+      (model) =>
+        getModelVehicleType(model.slug) === vehicleType &&
+        (makeSlug ? model.makeSlug === makeSlug : true),
+    );
+  }, [vehicleType, makeSlug]);
 
-      trackEvent({
-        name: "recommendation_viewed",
-        payload: { makeSlug, modelSlug, needSlug, count: matched.length },
-      });
+  const availableYears = useMemo(() => {
+    if (modelSlug) {
+      const model = vehicleModels.find((entry) => entry.slug === modelSlug);
+      return model ? parseYearRange(model.yearRange) : [];
+    }
 
-      return matched;
-    },
-  });
+    const years = new Set<number>();
 
-  const selectedRecommendation =
-    recommendations?.find((product) => product.id === selectedProductId) ?? recommendations?.[0] ?? null;
+    availableModels.forEach((model) => {
+      parseYearRange(model.yearRange).forEach((entry) => years.add(entry));
+    });
+
+    return Array.from(years).sort((a, b) => b - a);
+  }, [modelSlug, availableModels]);
+
+  const availableNeeds = useMemo(() => {
+    const allowedNeedSlugs = new Set(vehicleTypeNeedMap[vehicleType]);
+    return vehicleNeeds.filter((need) => allowedNeedSlugs.has(need.slug));
+  }, [vehicleType]);
+
+  const selectedMakeSlug = availableMakes.some((entry) => entry.slug === makeSlug) ? makeSlug : "";
+  const selectedModelSlug = availableModels.some((entry) => entry.slug === modelSlug) ? modelSlug : "";
+  const selectedNeedSlug = availableNeeds.some((entry) => entry.slug === needSlug) ? needSlug : "";
+  const selectedYear = year && availableYears.includes(Number.parseInt(year, 10)) ? year : "";
+
+  const filteredResults = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return allFinderResults
+      .filter((result) => {
+        if (result.vehicleType !== vehicleType) {
+          return false;
+        }
+
+        if (selectedMakeSlug && result.makeSlug !== selectedMakeSlug) {
+          return false;
+        }
+
+        if (selectedModelSlug && result.modelSlug !== selectedModelSlug) {
+          return false;
+        }
+
+        if (selectedNeedSlug && result.needSlug !== selectedNeedSlug) {
+          return false;
+        }
+
+        if (selectedYear) {
+          const yearValue = Number.parseInt(selectedYear, 10);
+          if (!Number.isFinite(yearValue) || !result.years.includes(yearValue)) {
+            return false;
+          }
+        }
+
+        if (!normalizedSearch) {
+          return true;
+        }
+
+        const haystack = [
+          result.makeName,
+          result.modelName,
+          result.needName,
+          result.serviceName,
+          result.productName,
+          result.centerName,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return haystack.includes(normalizedSearch);
+      })
+      .sort((a, b) => a.modelName.localeCompare(b.modelName) || a.centerCity.localeCompare(b.centerCity));
+  }, [allFinderResults, vehicleType, selectedMakeSlug, selectedModelSlug, selectedNeedSlug, selectedYear, searchTerm]);
 
   return (
     <>
-      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <Card className="z-10 space-y-5 overflow-visible">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/82">Decision engine</p>
-            <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
-              Vehicle-led recommendation flow
-            </h3>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <FinderSelect
-              label="Vehicle make"
-              placeholder="Choose make"
-              value={makeSlug}
-              onChange={(nextValue) => {
-                setMakeSlug(nextValue);
-                setModelSlug("");
-                setSelectedProductId(null);
-              }}
-              options={vehicleMakes.map((make) => ({ value: make.slug, label: make.name }))}
-            />
-            <FinderSelect
-              label="Vehicle model"
-              placeholder="Choose model"
-              value={modelSlug}
-              onChange={(nextValue) => {
-                setModelSlug(nextValue);
-                setSelectedProductId(null);
-              }}
-              disabled={!makeSlug}
-              options={filteredModels.map((model) => ({
-                value: model.slug,
-                label: model.name,
-                description: model.yearRange,
-              }))}
-              emptyLabel="Choose a make first"
-            />
-            <FinderSelect
-              label="Service intent"
-              placeholder="Choose need"
-              value={needSlug}
-              onChange={(nextValue) => {
-                setNeedSlug(nextValue);
-                setSelectedProductId(null);
-              }}
-              options={vehicleNeeds.map((need) => ({
-                value: need.slug,
-                label: need.name,
-                description: need.description,
-              }))}
-            />
-          </div>
-          <p className="text-sm leading-7 text-[var(--muted-foreground)]">
-            The first pass is powered by typed seed data. The UI is intentionally decoupled from the recommendation source so Excel, ERP, or CMS imports can replace it later.
-          </p>
-        </Card>
-        <Card className="space-y-4">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/82">Recommendation output</p>
-            <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
-              Recommended next step
-            </h3>
-          </div>
-          {recommendations?.length ? (
-            <>
-              <div className="space-y-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
-                  Select one of the suggested products to continue.
-                </p>
-                {recommendations.map((product) => {
-                  const isSelected = selectedRecommendation?.id === product.id;
+      <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <Card tone="surface" className="space-y-5">
+          <div className="grid grid-cols-3 gap-2 rounded-xl border border-[rgba(30,42,35,0.12)] bg-[var(--off-white)] p-2">
+            {modeOptions.map(({ value, label, Icon }) => {
+              const isActive = mode === value;
 
-                  return (
-                    <button
-                      key={product.slug}
-                      type="button"
-                      onClick={() => setSelectedProductId(product.id)}
-                      className={cn(
-                        "w-full rounded-2xl border bg-white/8 p-4 text-left transition",
-                        isSelected
-                          ? "border-white/28 bg-white/12 shadow-[0_14px_32px_rgba(255,255,255,0.08)]"
-                          : "border-white/12 hover:border-white/22 hover:bg-white/10",
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.14em] text-white/82">{product.segment}</p>
-                          <h4 className="mt-2 text-lg font-semibold text-[var(--accent)]">{product.name}</h4>
-                          <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
-                            {product.headline}
-                          </p>
-                        </div>
-                        {isSelected ? (
-                          <span className="rounded-full border border-white/18 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
-                            Selected
-                          </span>
-                        ) : null}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Button
+              return (
+                <button
+                  key={value}
                   type="button"
                   onClick={() => {
-                    trackEvent({
-                      name: "campaign_cta_clicked",
-                      payload: { surface: "finder-buy-online", productSlug: selectedRecommendation?.slug },
-                    });
-                    setIsComingSoonOpen(true);
+                    if (value !== "vehicle") {
+                      setIsComingSoonOpen(true);
+                      return;
+                    }
+                    setMode(value);
                   }}
+                  className={cn(
+                    "grid min-h-[7rem] grid-rows-[1.75rem_auto] items-start justify-items-center rounded-xl border px-1 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.01em] transition sm:min-h-[6.75rem] sm:px-2.5 sm:text-[11px] sm:tracking-[0.06em]",
+                    isActive
+                      ? "border-[rgba(12,107,52,0.42)] bg-white text-[var(--castrol-green-deep)]"
+                      : "border-transparent text-[var(--muted-foreground)] hover:border-[rgba(30,42,35,0.12)]",
+                  )}
                 >
-                  Buy online
-                </Button>
-                <LinkButton
-                  href={selectedRecommendation ? `/booking?product=${selectedRecommendation.slug}` : "/booking"}
-                  variant="secondary"
-                >
-                  Book service
-                </LinkButton>
-                <LinkButton href="/service-centers" variant="ghost">
-                  Find nearby center
-                </LinkButton>
-              </div>
-            </>
-          ) : (
-            <div className="rounded-2xl border border-dashed border-white/14 bg-white/8 p-6 text-sm leading-7 text-[var(--muted-foreground)]">
-              Choose a vehicle and service intent to reveal product recommendations and conversion paths.
+                  <span className="flex h-7 items-center justify-center leading-none">
+                    <Icon className="h-6 w-6 sm:h-5 sm:w-5" />
+                  </span>
+                  <span className="block leading-[1.12] [text-wrap:balance]">{label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-[var(--foreground)]">Type to search or select from the fields below</p>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-foreground)]" />
+              <Input
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search by brand, model, service, or product"
+                className="pl-10"
+              />
             </div>
-          )}
+          </div>
+
+          <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+            <span className="h-px flex-1 bg-[rgba(30,42,35,0.2)]" />
+            <span>OR</span>
+            <span className="h-px flex-1 bg-[rgba(30,42,35,0.2)]" />
+          </div>
+
+          <div className="grid gap-3">
+            <Select
+              value={vehicleType}
+              onChange={(event) => {
+                setVehicleType(event.target.value as FinderVehicleType);
+                setMakeSlug("");
+                setModelSlug("");
+                setYear("");
+                setNeedSlug("");
+              }}
+            >
+              {vehicleTypeOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+
+            <Select
+              value={selectedMakeSlug}
+              onChange={(event) => {
+                setMakeSlug(event.target.value);
+                setModelSlug("");
+                setYear("");
+              }}
+            >
+              <option value="">Make</option>
+              {availableMakes.map((make) => (
+                <option key={make.slug} value={make.slug}>
+                  {make.name}
+                </option>
+              ))}
+            </Select>
+
+            <Select
+              value={selectedModelSlug}
+              onChange={(event) => {
+                setModelSlug(event.target.value);
+                setYear("");
+              }}
+              disabled={!availableModels.length}
+            >
+              <option value="">Model</option>
+              {availableModels.map((model) => (
+                <option key={model.slug} value={model.slug}>
+                  {model.name} ({model.yearRange})
+                </option>
+              ))}
+            </Select>
+
+            <Select value={selectedYear} onChange={(event) => setYear(event.target.value)} disabled={!availableYears.length}>
+              <option value="">Year</option>
+              {availableYears.map((optionYear) => (
+                <option key={optionYear} value={String(optionYear)}>
+                  {optionYear}
+                </option>
+              ))}
+            </Select>
+
+            <Select value={selectedNeedSlug} onChange={(event) => setNeedSlug(event.target.value)}>
+              <option value="">Service intent</option>
+              {availableNeeds.map((need) => (
+                <option key={need.slug} value={need.slug}>
+                  {need.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <Button
+            type="button"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              trackEvent({
+                name: "finder_started",
+                payload: {
+                  mode,
+                  vehicleType,
+                  makeSlug: selectedMakeSlug || "all",
+                  modelSlug: selectedModelSlug || "all",
+                  year: selectedYear || "all",
+                  needSlug: selectedNeedSlug || "all",
+                  query: searchTerm || "none",
+                },
+              });
+            }}
+          >
+            Search
+          </Button>
+        </Card>
+
+        <Card tone="panel" className="space-y-4">
+          <p className="text-sm font-semibold text-[var(--foreground)]">{filteredResults.length} service option(s) found.</p>
+          <div className="max-h-[38rem] overflow-y-auto rounded-xl border border-[rgba(30,42,35,0.14)] bg-white">
+            {filteredResults.length ? (
+              filteredResults.map((result) => (
+                <article key={result.id} className="border-b border-[rgba(30,42,35,0.1)] p-4 last:border-b-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <h4 className="text-base font-semibold text-[var(--foreground)]">
+                        {result.makeName} {result.modelName} ({result.yearRangeLabel})
+                      </h4>
+                      <p className="text-sm text-[var(--muted-foreground)]">{result.serviceName}</p>
+                      <p className="text-sm text-[var(--muted-foreground)]">{result.centerName}</p>
+                    </div>
+                    <span className="rounded-md border border-[rgba(30,42,35,0.16)] bg-[var(--off-white)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)]">
+                      {result.centerCity}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--castrol-red)]">
+                    Recommended product: {result.productName}
+                  </p>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <LinkButton href={`/booking?product=${result.productSlug}`} className="px-3 py-2 text-xs !text-white">
+                      Book service
+                    </LinkButton>
+                    <LinkButton href={`/products/${result.productSlug}`} variant="secondary" className="px-3 py-2 text-xs">
+                      View product <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                    </LinkButton>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <div className="p-6 text-sm leading-7 text-[var(--muted-foreground)]">
+                No matching services found for this filter combination. Try clearing one or more filters.
+              </div>
+            )}
+          </div>
         </Card>
       </div>
+
       <ComingSoonDialog
         open={isComingSoonOpen}
         close={() => setIsComingSoonOpen(false)}
-        title="Online checkout"
-        description={
-          selectedRecommendation
-            ? `${selectedRecommendation.name} is mapped and ready for commerce wiring, but checkout is not live yet. This action will become available in a later release.`
-            : "Online checkout is not live yet. This action will become available in a later release."
-        }
+        title="Finder mode"
+        description="License plate and direct fluid search modes are planned next. Vehicle and equipment mode is active now."
       />
     </>
   );
 }
 
-function FinderSelect({
-  label,
-  placeholder,
-  value,
-  onChange,
-  options,
-  disabled = false,
-  emptyLabel = "No options available",
-}: {
-  label: string;
-  placeholder: string;
-  value: string;
-  onChange: (nextValue: string) => void;
-  options: FinderOption[];
-  disabled?: boolean;
-  emptyLabel?: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const selectedOption = options.find((option) => option.value === value);
+function buildFinderResults() {
+  const makeBySlug = new Map(vehicleMakes.map((make) => [make.slug, make]));
+  const needBySlug = new Map(vehicleNeeds.map((need) => [need.slug, need]));
+  const results: FinderResult[] = [];
 
-  const handleOutsideClick = useEffectEvent((event: MouseEvent) => {
-    if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-      setOpen(false);
+  for (const model of vehicleModels) {
+    const make = makeBySlug.get(model.makeSlug);
+    const modelVehicleType = getModelVehicleType(model.slug);
+    const yearRange = parseYearRange(model.yearRange);
+    const needSlugs = vehicleTypeNeedMap[modelVehicleType];
+
+    for (const nextNeedSlug of needSlugs) {
+      const need = needBySlug.get(nextNeedSlug);
+      if (!need) {
+        continue;
+      }
+
+      const neededFamilies = needToFamilySlugs[nextNeedSlug] ?? [];
+      const serviceSlug = needToServiceSlug[nextNeedSlug];
+      const familyProducts = products.filter((product) => neededFamilies.includes(product.familySlug));
+
+      for (const center of serviceCenters) {
+        const centerService =
+          center.services.find((service) => service.slug === serviceSlug) ??
+          center.services.find((service) => service.slug === "oil-change") ??
+          center.services[0];
+
+        const centerFamilySet = new Set(center.inventory.map((inventoryEntry) => inventoryEntry.familySlug));
+        const hasFamilyMatch = neededFamilies.some((familySlug) => centerFamilySet.has(familySlug));
+
+        if (!centerService || !hasFamilyMatch) {
+          continue;
+        }
+
+        const centerProduct =
+          familyProducts.find((product) => centerFamilySet.has(product.familySlug)) ?? familyProducts[0];
+
+        if (!centerProduct) {
+          continue;
+        }
+
+        results.push({
+          id: `${model.slug}-${nextNeedSlug}-${center.slug}-${centerService.slug}`,
+          vehicleType: modelVehicleType,
+          makeSlug: model.makeSlug,
+          makeName: make?.name ?? model.makeSlug,
+          modelSlug: model.slug,
+          modelName: model.name,
+          yearRangeLabel: model.yearRange,
+          years: yearRange,
+          needSlug: nextNeedSlug,
+          needName: need.name,
+          centerSlug: center.slug,
+          centerName: center.name,
+          centerCity: center.city,
+          serviceName: centerService.name,
+          productSlug: centerProduct.slug,
+          productName: centerProduct.name,
+        });
+      }
     }
-  });
+  }
 
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
+  return results;
+}
 
-    document.addEventListener("mousedown", handleOutsideClick);
+function getModelVehicleType(modelSlug: string): FinderVehicleType {
+  return modelVehicleTypeMap[modelSlug] ?? "cars-light-duty-trucks";
+}
 
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [open]);
+function parseYearRange(range: string) {
+  const [startText, endText] = range.split("-").map((part) => part.trim());
+  const startYear = Number.parseInt(startText, 10);
+  const endYearCandidate = Number.parseInt(endText, 10);
 
-  return (
-    <div ref={containerRef} className={cn("relative", open && "z-20")}>
-      <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-foreground)]">{label}</p>
-      <button
-        type="button"
-        disabled={disabled}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        onClick={() => setOpen((current) => !current)}
-        className={cn(
-          "flex w-full items-center justify-between rounded-[1.5rem] border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(240,247,235,0.96))] px-4 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] transition",
-          disabled
-            ? "cursor-not-allowed opacity-45"
-            : "hover:border-white/40 hover:bg-white",
-          open && "border-white/60 shadow-[0_0_0_3px_rgba(255,255,255,0.14)]",
-        )}
-      >
-        <span className={cn("truncate text-sm", selectedOption ? "text-[var(--foreground)]" : "text-[rgba(47,79,58,0.55)]")}>
-          {selectedOption?.label ?? placeholder}
-        </span>
-        <ChevronDown className={cn("h-4 w-4 text-[var(--muted-foreground)] transition", open && "rotate-180")} />
-      </button>
+  if (!Number.isFinite(startYear)) {
+    return [];
+  }
 
-      {open ? (
-        <div className="absolute left-0 top-full z-20 mt-2 w-full overflow-hidden rounded-[1.5rem] border border-white/30 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(242,247,238,0.98))] shadow-[0_24px_60px_rgba(8,44,24,0.16)] backdrop-blur-xl">
-          {options.length ? (
-            <ul role="listbox" className="max-h-72 overflow-y-auto p-2">
-              {options.map((option) => {
-                const isSelected = option.value === value;
+  const endYear = Number.isFinite(endYearCandidate) ? endYearCandidate : new Date().getFullYear();
+  const normalizedEnd = Math.max(startYear, endYear);
+  const years: number[] = [];
 
-                return (
-                  <li key={option.value}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onChange(option.value);
-                        setOpen(false);
-                      }}
-                      className={cn(
-                        "flex w-full items-start justify-between rounded-[1rem] px-3 py-3 text-left transition",
-                        isSelected ? "bg-[rgba(220,235,216,0.95)] text-[var(--foreground)]" : "text-[var(--foreground)] hover:bg-[rgba(220,235,216,0.72)]",
-                      )}
-                    >
-                      <span className="space-y-1">
-                        <span className="block text-sm font-medium">{option.label}</span>
-                        {option.description ? (
-                          <span className="block text-xs uppercase tracking-[0.14em] text-[rgba(47,79,58,0.6)]">{option.description}</span>
-                        ) : null}
-                      </span>
-                      {isSelected ? <Check className="mt-0.5 h-4 w-4 text-[var(--brand)]" /> : null}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="px-4 py-4 text-sm text-[var(--muted-foreground)]">{emptyLabel}</div>
-          )}
-        </div>
-      ) : null}
-    </div>
-  );
+  for (let year = startYear; year <= normalizedEnd; year += 1) {
+    years.push(year);
+  }
+
+  return years;
 }

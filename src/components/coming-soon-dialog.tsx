@@ -10,11 +10,15 @@ export function ComingSoonDialog({
   title,
   description,
   close,
+  eyebrow = "Coming soon",
+  actionLabel = "Understood",
 }: {
   open: boolean;
   title: string;
   description: string;
   close: () => void;
+  eyebrow?: string;
+  actionLabel?: string;
 }) {
   const handleEscape = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -53,7 +57,7 @@ export function ComingSoonDialog({
       >
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Coming soon</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">{eyebrow}</p>
             <h2 id="coming-soon-title" className="font-display text-3xl uppercase tracking-[0.1em] text-[var(--foreground)]">
               {title}
             </h2>
@@ -70,7 +74,7 @@ export function ComingSoonDialog({
         <p className="mt-4 text-sm leading-7 text-[var(--muted-foreground)]">{description}</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Button type="button" onClick={close}>
-            Understood
+            {actionLabel}
           </Button>
         </div>
       </div>

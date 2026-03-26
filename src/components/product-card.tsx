@@ -14,17 +14,17 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Card className="flex h-full flex-col gap-5">
       <div className="space-y-3">
-        <p className="text-xs uppercase tracking-[0.14em] text-white/82">{product.segment}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--castrol-yellow)]">{product.segment}</p>
         <div>
-          <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
+          <h3 className="font-sans text-3xl font-extrabold uppercase leading-[0.96] tracking-[0.02em] text-white">
             {product.name}
           </h3>
-          <p className="mt-2 text-sm leading-7 text-[var(--muted-foreground)]">{product.headline}</p>
+          <p className="mt-2 text-sm leading-7 text-white/84">{product.headline}</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
         {product.tags.slice(0, 3).map((tag) => (
-          <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-[var(--muted-foreground)]">
+          <span key={tag} className="rounded-full border border-white/18 px-3 py-1 text-xs text-white/84">
             {tag}
           </span>
         ))}
@@ -32,7 +32,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="mt-auto space-y-3">
         <Link
           href={`/products/${product.slug}`}
-          className="inline-flex w-fit items-center rounded-full border border-white/12 px-3 py-1.5 text-sm font-semibold !text-white visited:!text-white transition hover:border-white/30 hover:bg-white/10 hover:!text-white hover:shadow-[0_8px_20px_rgba(255,255,255,0.08)]"
+          className="inline-flex w-fit items-center rounded-full border border-white/22 px-3 py-1.5 text-sm font-semibold !text-[var(--castrol-yellow)] visited:!text-[var(--castrol-yellow)] transition hover:border-white/38 hover:bg-white/10 hover:!text-white hover:shadow-[0_8px_20px_rgba(255,255,255,0.08)]"
         >
           View product detail
         </Link>

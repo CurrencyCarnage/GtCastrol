@@ -6,8 +6,9 @@ import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
+import { ComingSoonDialog } from "@/components/coming-soon-dialog";
 import { Button, Card, Input } from "@/components/ui";
-import { bookingSubmissionSchema, type BookingSubmission, normalizeOptionalBookingValue } from "@/lib/booking";
+import { bookingSubmissionSchema, type BookingSubmission } from "@/lib/booking";
 import { trackEvent } from "@/lib/analytics";
 import { products, serviceCenters } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export function BookingForm() {
   const [displayMonth, setDisplayMonth] = useState(() => startOfMonth(new Date()));
   const [activeDate, setActiveDate] = useState<string | null>(null);
+  const [isReservationDialogOpen, setIsReservationDialogOpen] = useState(false);
   const [submissionState, setSubmissionState] = useState<
     | { status: "idle"; message: "" }
     | { status: "success" | "error"; message: string }
@@ -68,28 +70,8 @@ export function BookingForm() {
   const calendarDays = buildCalendarDays(displayMonth);
   const activeTimes = activeDate ? slotMap.get(activeDate) ?? [] : [];
 
-  const onSubmit = async (values: BookingSubmission) => {
+  const onSubmit = (values: BookingSubmission) => {
     setSubmissionState({ status: "idle", message: "" });
-
-    const response = await fetch("/api/bookings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...values,
-        preferredProductSlug: normalizeOptionalBookingValue(values.preferredProductSlug),
-      }),
-    });
-    const responseBody = (await response.json().catch(() => null)) as { message?: string } | null;
-
-    if (!response.ok) {
-      setSubmissionState({
-        status: "error",
-        message: responseBody?.message ?? "Unable to send the booking request right now. Please try again shortly.",
-      });
-      return;
-    }
 
     trackEvent({
       name: "booking_completed",
@@ -100,11 +82,7 @@ export function BookingForm() {
         slotId: values.slotId,
       },
     });
-
-    setSubmissionState({
-      status: "success",
-      message: responseBody?.message ?? "Booking request sent. Our team has been notified and will follow up shortly.",
-    });
+    setIsReservationDialogOpen(true);
   };
 
   const centerOptions: BookingOption[] = serviceCenters.map((center) => ({
@@ -127,16 +105,17 @@ export function BookingForm() {
   }));
 
   return (
-    <Card className="space-y-6">
-      <div>
-        <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
-          Direct and product-led booking
-        </h3>
-        <p className="mt-2 max-w-2xl text-sm leading-7 text-[var(--muted-foreground)]">
-          This MVP supports both direct booking and future product-led booking. Real availability, CRM sync, and order creation remain intentionally abstracted for the next integration pass.
-        </p>
-      </div>
-      <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <Card className="space-y-6">
+        <div>
+          <h3 className="font-sans text-3xl font-extrabold uppercase leading-[0.96] tracking-[0.02em] text-white">
+            Direct and product-led booking
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-7 text-white/84">
+            This MVP supports both direct booking and future product-led booking. Real availability, CRM sync, and order creation remain intentionally abstracted for the next integration pass.
+          </p>
+        </div>
+        <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-2">
           <FieldLabel label="Full name" required />
           <Input
@@ -234,8 +213,8 @@ export function BookingForm() {
         <div className="space-y-3 md:col-span-2 rounded-[1.6rem] border border-white/12 bg-white/8 p-4 sm:p-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Availability calendar</p>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--castrol-yellow)]">Availability calendar</p>
+              <p className="text-sm text-white/84">
                 {slotDays.length
                   ? "Select a highlighted day to reveal available appointment times."
                   : "Choose a branch and service to preview availability."}
@@ -319,7 +298,7 @@ export function BookingForm() {
             activeDate && activeTimes.length ? (
               <div className="rounded-[1.4rem] border border-white/12 bg-white/10 p-4">
                 <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Available slots</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--castrol-yellow)]">Available slots</p>
                   <p className="text-sm font-semibold text-white">{formatSelectedDay(activeDate)}</p>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -350,12 +329,12 @@ export function BookingForm() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-[1.4rem] border border-dashed border-white/12 bg-white/6 p-4 text-sm text-[var(--muted-foreground)]">
+              <div className="rounded-[1.4rem] border border-dashed border-white/12 bg-white/6 p-4 text-sm text-white/84">
                 Pick any highlighted day to view appointment times for that date.
               </div>
             )
           ) : (
-            <div className="rounded-[1.4rem] border border-dashed border-white/12 bg-white/6 p-4 text-sm text-[var(--muted-foreground)]">
+            <div className="rounded-[1.4rem] border border-dashed border-white/12 bg-white/6 p-4 text-sm text-white/84">
               Choose a branch and service to preview availability.
             </div>
           )}
@@ -380,8 +359,17 @@ export function BookingForm() {
             {submissionState.message}
           </p>
         ) : null}
-      </form>
-    </Card>
+        </form>
+      </Card>
+      <ComingSoonDialog
+        open={isReservationDialogOpen}
+        close={() => setIsReservationDialogOpen(false)}
+        eyebrow="Reservation"
+        title="The Reservation Booked"
+        description="The Reservation Booked"
+        actionLabel="Close"
+      />
+    </>
   );
 }
 

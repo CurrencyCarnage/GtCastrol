@@ -20,8 +20,8 @@ Create `.env.local` with SMTP credentials before testing the booking submit flow
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER=your-mailbox@example.com
-SMTP_PASS=your-app-password
+SMTP_USER=currencycarnage@gmail.com
+SMTP_PASS=ZalianrTuliparoli
 BOOKING_FROM_EMAIL=your-mailbox@example.com
 ```
 

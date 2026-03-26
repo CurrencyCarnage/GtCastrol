@@ -1,25 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Globe2, Menu, Minus, Plus, ShoppingCart, Trash2, UserCircle2, X } from "lucide-react";
+import { ChevronRight, Globe2, MapPin, Menu, Minus, Plus, ShoppingCart, Trash2, UserCircle2, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { ComingSoonDialog } from "@/components/coming-soon-dialog";
-import { useCartStore } from "@/store/cart-store";
 import { titleFromSlug } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/cart-store";
 
 export function SiteHeader() {
   const count = useCartStore((state) => state.count);
   const isOpen = useCartStore((state) => state.isOpen);
   const toggle = useCartStore((state) => state.toggle);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCompressed, setIsCompressed] = useState(false);
   const navLinks = [
     ["/products", "Catalogue"],
     ["/finder", "Product Finder"],
     ["/service-centers", "Service Centers"],
     ["/booking", "Booking"],
-    ["/blog", "Blog"],
+    ["/blog", "News"],
+    ["/about", "About"],
   ] as const;
 
   useEffect(() => {
@@ -43,60 +47,89 @@ export function SiteHeader() {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsCompressed(window.scrollY > 20);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-[rgba(0,91,42,0.12)] bg-[rgba(249,252,246,0.92)] backdrop-blur-2xl shadow-[0_10px_30px_rgba(12,52,30,0.06)]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-8">
-          <div className="flex min-w-0 items-center gap-3 lg:gap-8">
-            <button
-              type="button"
-              onClick={() => setIsMenuOpen(true)}
-              aria-haspopup="dialog"
-              aria-expanded={isMenuOpen}
-              aria-label="Open navigation"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(0,91,42,0.14)] bg-white text-[var(--foreground)] shadow-[0_8px_18px_rgba(12,52,30,0.06)] lg:hidden"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
-            <Link href="/" className="flex min-w-0 flex-col">
-              <span className="truncate font-display text-lg uppercase tracking-[0.22em] text-[var(--foreground)] sm:text-xl">
-                Castrol Georgia
-              </span>
-              <span className="truncate text-[11px] uppercase tracking-[0.16em] text-[var(--muted-foreground)] sm:text-xs sm:tracking-[0.2em]">
-                Product, service, branch journeys
-              </span>
-            </Link>
-            <nav className="hidden items-center gap-5 lg:flex">
+      <header className="sticky top-0 z-40 border-b border-[rgba(30,42,35,0.14)] bg-[rgba(255,255,255,0.94)] backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <div
+            className={cn(
+              "grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-transparent transition-all duration-200",
+              isCompressed ? "py-2.5" : "py-4",
+            )}
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(true)}
+                aria-haspopup="dialog"
+                aria-expanded={isMenuOpen}
+                aria-label="Open navigation"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(30,42,35,0.16)] bg-white text-[var(--foreground)] lg:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+              <BrandLogo imageClassName={cn("h-9 sm:h-10", isCompressed && "sm:h-9")} priority />
+            </div>
+
+            <nav className="hidden items-center justify-center gap-6 lg:flex">
               {navLinks.map(([href, label]) => (
-                <Link key={href} href={href} className="text-sm text-[var(--muted-foreground)] transition hover:text-[var(--foreground)]">
+                <Link
+                  key={href}
+                  href={href}
+                  className="text-sm font-semibold uppercase tracking-[0.08em] text-[var(--muted-foreground)] transition hover:text-[var(--castrol-green-deep)]"
+                >
                   {label}
                 </Link>
               ))}
             </nav>
-          </div>
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <span className="hidden items-center gap-2 rounded-full border border-[rgba(0,91,42,0.14)] bg-white px-3 py-2 text-xs uppercase tracking-[0.14em] text-[var(--muted-foreground)] md:inline-flex">
-              <Globe2 className="h-4 w-4" />
-              KA / EN
-            </span>
-            <Link href="/account" className="hidden items-center gap-2 rounded-full border border-[rgba(0,91,42,0.14)] bg-white px-3 py-2 text-xs uppercase tracking-[0.14em] text-[var(--foreground)] md:inline-flex">
-              <UserCircle2 className="h-4 w-4" />
-              Account
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                setIsMenuOpen(false);
-                toggle();
-              }}
-              aria-haspopup="dialog"
-              aria-expanded={isOpen}
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,91,42,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,1),rgba(241,247,238,1))] px-3 py-2 text-xs uppercase tracking-[0.14em] text-[var(--foreground)] transition hover:border-[rgba(0,133,63,0.34)]"
-            >
-              <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">Cart</span>
-              <span className="rounded-full bg-[var(--brand)] px-2 py-0.5 text-[var(--brand-contrast)]">{count}</span>
-            </button>
+
+            <div className="flex shrink-0 items-center justify-end gap-2">
+              <span className="hidden items-center gap-2 rounded-lg border border-[rgba(30,42,35,0.16)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)] md:inline-flex">
+                <Globe2 className="h-4 w-4" />
+                KA / EN
+              </span>
+              <Link
+                href="/service-centers"
+                className="hidden items-center gap-2 rounded-lg border border-[rgba(30,42,35,0.16)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] xl:inline-flex"
+              >
+                <MapPin className="h-4 w-4" />
+                Locations
+              </Link>
+              <Link
+                href="/account"
+                className="hidden items-center gap-2 rounded-lg border border-[rgba(30,42,35,0.16)] bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] md:inline-flex"
+              >
+                <UserCircle2 className="h-4 w-4" />
+                Account
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  toggle();
+                }}
+                aria-haspopup="dialog"
+                aria-expanded={isOpen}
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--castrol-green-dark)] bg-[linear-gradient(180deg,var(--castrol-green),var(--castrol-green-dark))] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:border-[var(--castrol-green-deep)]"
+              >
+                <ShoppingCart className="h-4 w-4" />
+                <span className="hidden sm:inline">Cart</span>
+                <span className="rounded-md bg-white px-1.5 py-0.5 text-[10px] text-[var(--castrol-green-deep)]">{count}</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -110,15 +143,28 @@ export function Breadcrumbs() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
 
-  if (segments.length === 0) {
+  if (
+    segments.length === 0 ||
+    pathname.startsWith("/finder") ||
+    pathname.startsWith("/products") ||
+    pathname.startsWith("/service-centers") ||
+    pathname.startsWith("/booking") ||
+    pathname.startsWith("/blog") ||
+    pathname.startsWith("/about")
+  ) {
     return null;
   }
 
   return (
-    <nav aria-label="Breadcrumb" className="mx-auto w-full max-w-7xl px-5 pt-4 text-xs uppercase tracking-[0.14em] text-[var(--muted-foreground)] sm:px-8">
+    <nav
+      aria-label="Breadcrumb"
+      className="mx-auto w-full max-w-7xl px-5 pt-4 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-dark)] sm:px-8"
+    >
       <ol className="flex flex-wrap items-center gap-2">
         <li>
-          <Link href="/">Home</Link>
+          <Link href="/" className="transition hover:text-[var(--castrol-green-deep)]">
+            Home
+          </Link>
         </li>
         {segments.map((segment, index) => {
           const href = `/${segments.slice(0, index + 1).join("/")}`;
@@ -128,7 +174,9 @@ export function Breadcrumbs() {
               {index === segments.length - 1 ? (
                 <span className="text-[var(--foreground)]">{titleFromSlug(segment)}</span>
               ) : (
-                <Link href={href}>{titleFromSlug(segment)}</Link>
+                <Link href={href} className="transition hover:text-[var(--castrol-green-deep)]">
+                  {titleFromSlug(segment)}
+                </Link>
               )}
             </li>
           );
@@ -140,32 +188,76 @@ export function Breadcrumbs() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[rgba(0,91,42,0.12)] bg-[rgba(255,255,255,0.88)] backdrop-blur-xl">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1.5fr_1fr]">
-        <div className="space-y-4">
-          <h2 className="font-display text-2xl uppercase tracking-[0.14em] text-[var(--foreground)]">
-            Castrol Georgia
-          </h2>
-          <p className="max-w-xl text-sm leading-7 text-[var(--muted-foreground)]">
-            Premium lubricant discovery, service-center booking, and commerce-ready journeys for Georgia.
+    <footer className="border-t border-[rgba(30,42,35,0.14)] bg-[var(--charcoal)] text-white">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-8 lg:min-h-[18rem] lg:grid-cols-[1.25fr_2fr] lg:items-end">
+        <div className="space-y-4 lg:self-end">
+          <BrandLogo className="w-fit rounded-md bg-white/96 px-3 py-2" imageClassName="h-8 sm:h-9" />
+          <h2 className="font-display text-4xl uppercase tracking-[0.08em] text-white">Authorized Service and Product Platform</h2>
+          <p className="max-w-xl text-sm leading-7 text-[rgba(255,255,255,0.72)]">
+            Official Castrol product discovery, local branch booking, and service-center support for drivers, workshops, and fleet operators in Georgia.
           </p>
         </div>
-        <div className="grid gap-3 text-sm text-[var(--muted-foreground)]">
-          {[
-            ["/about", "About"],
-            ["/contact", "Contact"],
-            ["/related-websites", "Related Websites"],
-            ["/legal/privacy", "Privacy"],
-            ["/legal/terms", "Terms"],
-            ["/legal/cookies", "Cookies"],
-          ].map(([href, label]) => (
-            <Link key={href} href={href}>
-              {label}
-            </Link>
-          ))}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:self-end">
+          <FooterColumn
+            title="Products"
+            links={[
+              ["/products", "Catalogue"],
+              ["/products/families/edge", "Passenger Range"],
+              ["/products/families/vecton", "Fleet Range"],
+              ["/finder", "Product Finder"],
+            ]}
+          />
+          <FooterColumn
+            title="Services"
+            links={[
+              ["/service-centers", "Service Centers"],
+              ["/booking", "Book Service"],
+              ["/contact", "Contact"],
+              ["/related-websites", "Related Websites"],
+            ]}
+          />
+          <FooterColumn
+            title="Company"
+            links={[
+              ["/about", "About"],
+              ["/blog", "News and Insights"],
+              ["/account", "Account"],
+              ["/service-centers", "Branches"],
+            ]}
+          />
+          <FooterColumn
+            title="Legal"
+            links={[
+              ["/legal/privacy", "Privacy"],
+              ["/legal/terms", "Terms"],
+              ["/legal/cookies", "Cookies"],
+              ["/", "KA / EN"],
+            ]}
+          />
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: readonly (readonly [string, string])[];
+}) {
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[rgba(255,255,255,0.62)]">{title}</p>
+      <div className="grid gap-2">
+        {links.map(([href, label]) => (
+          <Link key={href} href={href} className="text-sm text-[rgba(255,255,255,0.86)] transition hover:text-white">
+            {label}
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -183,26 +275,24 @@ function MobileNavDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-[45] flex bg-[rgba(9,34,19,0.18)] backdrop-blur-sm" onClick={close}>
+    <div className="fixed inset-0 z-[45] flex bg-[rgba(34,42,46,0.38)] backdrop-blur-sm" onClick={close}>
       <aside
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        className="flex h-full w-full max-w-[20rem] flex-col border-r border-[rgba(0,91,42,0.14)] bg-[linear-gradient(180deg,rgba(250,252,247,0.99),rgba(240,247,235,0.99))] shadow-[24px_0_80px_rgba(12,52,30,0.12)]"
+        className="flex h-full w-full max-w-[22rem] flex-col border-r border-[rgba(30,42,35,0.14)] bg-[rgba(255,255,255,0.98)] shadow-[24px_0_80px_rgba(30,42,35,0.18)]"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-start justify-between border-b border-[rgba(0,91,42,0.1)] px-5 py-5">
+        <div className="flex items-start justify-between border-b border-[rgba(30,42,35,0.12)] px-5 py-5">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Navigation</p>
-            <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-[var(--foreground)]">
-              Castrol Georgia
-            </h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--castrol-red)]">Navigation</p>
+            <BrandLogo imageClassName="h-8 sm:h-9" onClick={close} />
             <p className="text-sm text-[var(--muted-foreground)]">Browse the core product, service, and content sections.</p>
           </div>
           <button
             type="button"
             onClick={close}
-            className="rounded-full border border-[rgba(0,91,42,0.14)] p-2 text-[var(--muted-foreground)] transition hover:border-[rgba(0,133,63,0.3)] hover:text-[var(--foreground)]"
+            className="rounded-lg border border-[rgba(30,42,35,0.16)] p-2 text-[var(--muted-foreground)] transition hover:border-[var(--castrol-green-dark)] hover:text-[var(--foreground)]"
             aria-label="Close navigation"
           >
             <X className="h-5 w-5" />
@@ -215,23 +305,31 @@ function MobileNavDrawer({
               key={href}
               href={href}
               onClick={close}
-              className="rounded-[1.2rem] border border-[rgba(0,91,42,0.1)] bg-white px-4 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] shadow-[0_10px_24px_rgba(12,52,30,0.05)]"
+              className="rounded-xl border border-[rgba(30,42,35,0.12)] bg-white px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] shadow-[0_8px_18px_rgba(30,42,35,0.06)]"
             >
               {label}
             </Link>
           ))}
         </nav>
 
-        <div className="mt-auto space-y-3 border-t border-[rgba(0,91,42,0.1)] px-4 py-5">
+        <div className="mt-auto space-y-3 border-t border-[rgba(30,42,35,0.12)] px-4 py-5">
           <Link
             href="/account"
             onClick={close}
-            className="flex items-center gap-3 rounded-[1.2rem] border border-[rgba(0,91,42,0.1)] bg-white px-4 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] shadow-[0_10px_24px_rgba(12,52,30,0.05)]"
+            className="flex items-center gap-3 rounded-xl border border-[rgba(30,42,35,0.12)] bg-white px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] shadow-[0_8px_18px_rgba(30,42,35,0.06)]"
           >
             <UserCircle2 className="h-4 w-4" />
             Account
           </Link>
-          <div className="flex items-center gap-3 rounded-[1.2rem] border border-[rgba(0,91,42,0.1)] bg-white px-4 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)] shadow-[0_10px_24px_rgba(12,52,30,0.05)]">
+          <Link
+            href="/service-centers"
+            onClick={close}
+            className="flex items-center gap-3 rounded-xl border border-[rgba(30,42,35,0.12)] bg-white px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--foreground)] shadow-[0_8px_18px_rgba(30,42,35,0.06)]"
+          >
+            <MapPin className="h-4 w-4" />
+            Locations
+          </Link>
+          <div className="flex items-center gap-3 rounded-xl border border-[rgba(30,42,35,0.12)] bg-white px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)] shadow-[0_8px_18px_rgba(30,42,35,0.06)]">
             <Globe2 className="h-4 w-4" />
             KA / EN
           </div>

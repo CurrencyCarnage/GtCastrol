@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Card } from "@/components/ui";
@@ -27,14 +28,26 @@ export default async function BlogDetailPage(props: PageProps<"/blog/[slug]">) {
 
   return (
     <div className="page-shell space-y-8">
-      <div className="max-w-3xl space-y-4">
-        <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">{post.category}</p>
-        <h1 className="font-display text-4xl uppercase tracking-[0.08em] text-[var(--foreground)] sm:text-5xl">{post.title}</h1>
-        <p className="text-base leading-8 text-[var(--muted-foreground)]">{post.excerpt}</p>
+      <div className="max-w-3xl space-y-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>{" "}
+          &gt;{" "}
+          <Link href="/blog" className="hover:underline">
+            Blog
+          </Link>{" "}
+          &gt; {post.title}
+        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--castrol-yellow)]">{post.category}</p>
+        <h1 className="font-sans text-4xl font-extrabold uppercase leading-[0.96] tracking-[0.02em] text-[var(--foreground)] sm:text-5xl">
+          {post.title}
+        </h1>
+        <p className="text-base leading-7 text-[var(--muted-foreground)]">{post.excerpt}</p>
       </div>
-      <Card className="space-y-4">
+      <Card className="brand-divider space-y-4 pt-6">
         {post.body.map((paragraph) => (
-          <p key={paragraph} className="text-sm leading-7 text-[var(--muted-foreground)]">
+          <p key={paragraph} className="text-sm leading-7 text-white/84">
             {paragraph}
           </p>
         ))}

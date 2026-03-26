@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, JetBrains_Mono, Noto_Sans_Georgian } from "next/font/google";
+import { JetBrains_Mono, Manrope, Noto_Sans_Georgian, Oswald } from "next/font/google";
 
 import { Providers } from "@/app/providers";
 import { Breadcrumbs, SiteFooter, SiteHeader } from "@/components/site-shell";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
-const bodyFont = Noto_Sans_Georgian({
+const bodyFont = Manrope({
   variable: "--font-body-base",
-  subsets: ["latin", "georgian"],
+  subsets: ["latin"],
 });
 
-const displayFont = Barlow_Condensed({
+const georgianSupportFont = Noto_Sans_Georgian({
+  variable: "--font-body-georgian",
+  subsets: ["georgian"],
+});
+
+const displayFont = Oswald({
   variable: "--font-display-base",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const monoFont = JetBrains_Mono({
@@ -32,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full antialiased`}
+      className={`${bodyFont.variable} ${georgianSupportFont.variable} ${displayFont.variable} ${monoFont.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
         <Providers>
