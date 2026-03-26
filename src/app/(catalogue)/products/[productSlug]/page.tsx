@@ -37,20 +37,20 @@ export default async function ProductPage(props: PageProps<"/products/[productSl
           <p className="text-sm leading-7 text-[var(--muted-foreground)]">{product.description}</p>
           <div className="grid gap-3 md:grid-cols-2">
             {product.specs.map((spec) => (
-              <div key={spec.label} className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">{spec.label}</p>
+              <div key={spec.label} className="rounded-2xl border border-white/12 bg-white/8 p-4">
+                <p className="text-xs uppercase tracking-[0.14em] text-white/82">{spec.label}</p>
                 <p className="mt-2 text-sm text-white">{spec.value}</p>
               </div>
             ))}
           </div>
         </Card>
         <Card className="space-y-4">
-          <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-white">Pack sizes</h2>
+          <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">Pack sizes</h2>
           <div className="space-y-3">
             {product.packSizes.map((variant) => (
-              <div key={variant.id} className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 p-4">
+              <div key={variant.id} className="flex items-center justify-between rounded-2xl border border-white/12 bg-white/8 p-4">
                 <div>
-                  <p className="font-semibold text-white">{variant.label}</p>
+                  <p className="font-semibold text-[var(--accent)]">{variant.label}</p>
                   <p className="text-xs uppercase tracking-[0.14em] text-[var(--muted-foreground)]">{variant.inventoryStatus}</p>
                 </div>
                 <p className="text-sm text-white">{variant.priceLabel}</p>
@@ -59,7 +59,7 @@ export default async function ProductPage(props: PageProps<"/products/[productSl
           </div>
           <div className="flex flex-wrap gap-3">
             <Button>Add to cart</Button>
-            <a href="/booking" className="inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white">
+            <a href="/booking" className="inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
               Add to booking
             </a>
           </div>

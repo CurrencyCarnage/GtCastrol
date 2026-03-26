@@ -19,10 +19,10 @@ export default function ServiceCentersPage() {
         {serviceCenters.map((center) => (
           <Card key={center.slug} className="space-y-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">
+              <p className="text-xs uppercase tracking-[0.14em] text-white/82">
                 {center.city} / {center.district}
               </p>
-              <h2 className="mt-2 font-display text-2xl uppercase tracking-[0.08em] text-white">
+              <h2 className="mt-2 font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
                 {center.name}
               </h2>
             </div>

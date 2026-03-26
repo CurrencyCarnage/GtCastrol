@@ -29,13 +29,13 @@ export default async function LegalPage(props: PageProps<"/legal/[slug]">) {
     <div className="page-shell space-y-8">
       <div className="max-w-3xl space-y-4">
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Legal</p>
-        <h1 className="font-display text-4xl uppercase tracking-[0.08em] text-white sm:text-5xl">{page.title}</h1>
+        <h1 className="font-display text-4xl uppercase tracking-[0.08em] text-[var(--foreground)] sm:text-5xl">{page.title}</h1>
         <p className="text-base leading-8 text-[var(--muted-foreground)]">{page.summary}</p>
       </div>
       <div className="space-y-4">
         {page.sections.map((section) => (
           <Card key={section.heading} className="space-y-3">
-            <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-white">{section.heading}</h2>
+            <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">{section.heading}</h2>
             <p className="text-sm leading-7 text-[var(--muted-foreground)]">{section.body}</p>
           </Card>
         ))}

@@ -14,9 +14,9 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Card className="flex h-full flex-col gap-5">
       <div className="space-y-3">
-        <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">{product.segment}</p>
+        <p className="text-xs uppercase tracking-[0.14em] text-white/82">{product.segment}</p>
         <div>
-          <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-white">
+          <h3 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">
             {product.name}
           </h3>
           <p className="mt-2 text-sm leading-7 text-[var(--muted-foreground)]">{product.headline}</p>
@@ -30,7 +30,10 @@ export function ProductCard({ product }: { product: Product }) {
         ))}
       </div>
       <div className="mt-auto space-y-3">
-        <Link href={`/products/${product.slug}`} className="block text-sm font-semibold text-white underline-offset-4 hover:underline">
+        <Link
+          href={`/products/${product.slug}`}
+          className="inline-flex w-fit items-center rounded-full border border-white/12 px-3 py-1.5 text-sm font-semibold !text-white visited:!text-white transition hover:border-white/30 hover:bg-white/10 hover:!text-white hover:shadow-[0_8px_20px_rgba(255,255,255,0.08)]"
+        >
           View product detail
         </Link>
         <Button

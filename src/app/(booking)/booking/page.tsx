@@ -11,7 +11,7 @@ export default function BookingPage() {
     <div className="page-shell space-y-8">
       <div className="max-w-3xl space-y-4">
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)]">Booking MVP</p>
-        <h1 className="font-display text-4xl uppercase tracking-[0.08em] text-white sm:text-5xl">
+        <h1 className="font-display text-4xl uppercase tracking-[0.08em] text-[var(--foreground)] sm:text-5xl">
           Direct booking entry page
         </h1>
         <p className="text-base leading-8 text-[var(--muted-foreground)]">

@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050a10;
-  --surface: #09111b;
-  --surface-2: #0f1824;
-  --surface-3: #152130;
-  --foreground: #f4f8fc;
-  --muted-foreground: rgba(205, 217, 229, 0.72);
-  --brand: #a4c400;
-  --brand-deep: #6f8900;
-  --brand-contrast: #071008;
+  --background: #f4f8f0;
+  --surface: #0f4d2d;
+  --surface-2: #176339;
+  --surface-3: #e7f0e2;
+  --surface-4: #ffffff;
+  --foreground: #173423;
+  --muted-foreground: rgba(47, 79, 58, 0.82);
+  --brand: #00853f;
+  --brand-deep: #005b2a;
+  --brand-soft: #dcebd8;
+  --brand-contrast: #ffffff;
   --accent: #d71920;
   --accent-strong: #f04b45;
-  --danger: #ff7676;
-  --ring: #a4c400;
+  --danger: #bf2c39;
+  --ring: #00853f;
 }
 
 @theme inline {
@@ -30,7 +32,7 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -38,10 +40,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-body-base), sans-serif;
   background-image:
-    radial-gradient(circle at 18% 14%, rgba(164, 196, 0, 0.18), transparent 22%),
-    radial-gradient(circle at 84% 10%, rgba(215, 25, 32, 0.16), transparent 18%),
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 26%),
-    linear-gradient(180deg, #071019 0%, #050a10 100%);
+    radial-gradient(circle at 8% 10%, rgba(0, 133, 63, 0.12), transparent 24%),
+    radial-gradient(circle at 92% 0%, rgba(215, 25, 32, 0.08), transparent 18%),
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 34%),
+    linear-gradient(180deg, #fbfdf8 0%, #f4f8f0 50%, #edf4e8 100%);
 }
 
 body::before {
@@ -50,11 +52,11 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(circle at center, black 30%, transparent 95%);
-  opacity: 0.7;
+    linear-gradient(rgba(0, 91, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 91, 42, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, black 12%, rgba(0, 0, 0, 0.2) 52%, transparent 100%);
+  opacity: 0.55;
   z-index: -1;
 }
 
@@ -76,13 +78,13 @@ option {
 }
 
 ::selection {
-  background: rgba(215, 25, 32, 0.28);
-  color: white;
+  background: rgba(0, 133, 63, 0.22);
+  color: var(--foreground);
 }
 
 .page-shell {
   margin-inline: auto;
-  max-width: 80rem;
+  max-width: 84rem;
   padding: 2rem 1.25rem 5rem;
 }
 
@@ -102,8 +104,8 @@ option {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.68), transparent);
   pointer-events: none;
@@ -114,20 +116,20 @@ option {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(164, 196, 0, 0.14), transparent 28%),
-    radial-gradient(circle at right, rgba(215, 25, 32, 0.12), transparent 24%);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(0, 133, 63, 0.18), transparent 28%);
   pointer-events: none;
 }
 
 .hero-panel {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 91, 42, 0.16);
   border-radius: 2rem;
   background:
-    linear-gradient(135deg, rgba(164, 196, 0, 0.12), transparent 30%),
-    linear-gradient(225deg, rgba(215, 25, 32, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(20, 31, 44, 0.92), rgba(7, 12, 19, 0.96));
+    linear-gradient(130deg, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(225deg, rgba(215, 25, 32, 0.09), transparent 22%),
+    linear-gradient(180deg, rgba(0, 104, 52, 0.97), rgba(0, 74, 38, 0.98));
   box-shadow:
-    0 30px 100px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 0 0 1px rgba(215, 25, 32, 0.05);
+    0 30px 80px rgba(12, 52, 30, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 }

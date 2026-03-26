@@ -10,6 +10,23 @@ npm run lint
 npm run build
 ```
 
+## Booking Email
+
+The booking form now submits through `app/api/bookings/route.ts` and sends a notification email to `currencycarnage@gmail.com`.
+
+Create `.env.local` with SMTP credentials before testing the booking submit flow:
+
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=your-mailbox@example.com
+SMTP_PASS=your-app-password
+BOOKING_FROM_EMAIL=your-mailbox@example.com
+```
+
+If you are using Gmail SMTP, `SMTP_PASS` should be an app password, not your normal account password.
+
 ## Structure
 
 - `src/app` - App Router layouts and route groups

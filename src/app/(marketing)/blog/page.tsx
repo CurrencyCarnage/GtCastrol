@@ -20,12 +20,12 @@ export default function BlogPage() {
       <div className="grid gap-4 lg:grid-cols-2">
         {blogPosts.map((post) => (
           <Card key={post.slug} className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">
+            <p className="text-xs uppercase tracking-[0.14em] text-white/82">
               {post.category} · {post.readTime}
             </p>
-            <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-white">{post.title}</h2>
+            <h2 className="font-display text-2xl uppercase tracking-[0.08em] text-[var(--accent)]">{post.title}</h2>
             <p className="text-sm leading-7 text-[var(--muted-foreground)]">{post.excerpt}</p>
-            <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-white underline-offset-4 hover:underline">
+            <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-[var(--accent)] underline-offset-4 hover:underline">
               Read article
             </Link>
           </Card>

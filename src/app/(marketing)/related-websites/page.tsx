@@ -17,7 +17,7 @@ export default function RelatedWebsitesPage() {
       <div className="grid gap-4 md:grid-cols-3">
         {["Castrol Global", "Castrol Product Data", "Workshop Partner Portal"].map((item) => (
           <Card key={item}>
-            <h2 className="font-display text-xl uppercase tracking-[0.08em] text-white">{item}</h2>
+            <h2 className="font-display text-xl uppercase tracking-[0.08em] text-[var(--accent)]">{item}</h2>
           </Card>
         ))}
       </div>
