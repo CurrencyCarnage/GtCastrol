@@ -7,8 +7,9 @@ import { useMemo, useState } from "react";
 import { ComingSoonDialog } from "@/components/coming-soon-dialog";
 import { Button, Card, Input, LinkButton, Select } from "@/components/ui";
 import { trackEvent } from "@/lib/analytics";
-import { products, serviceCenters, vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
+import { serviceCenters, vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import type { Product } from "@/types/domain";
 
 type FinderMode = "vehicle" | "plate" | "fluid";
 type FinderVehicleType = "cars-light-duty-trucks" | "commercial-fleet" | "hybrid-ev";
@@ -72,7 +73,7 @@ const needToFamilySlugs: Record<string, string[]> = {
   "fleet-heavy-duty": ["vecton", "crb", "transmax"],
 };
 
-export function FinderWizard() {
+export function FinderWizard({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("query")?.trim() ?? "";
   const [mode, setMode] = useState<FinderMode>("vehicle");
@@ -84,7 +85,7 @@ export function FinderWizard() {
   const [needSlug, setNeedSlug] = useState("");
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
 
-  const allFinderResults = useMemo(() => buildFinderResults(), []);
+  const allFinderResults = useMemo(() => buildFinderResults(products), [products]);
 
   const availableMakes = useMemo(() => {
     const makeSlugs = new Set(
@@ -374,7 +375,7 @@ export function FinderWizard() {
   );
 }
 
-function buildFinderResults() {
+function buildFinderResults(products: Product[]) {
   const makeBySlug = new Map(vehicleMakes.map((make) => [make.slug, make]));
   const needBySlug = new Map(vehicleNeeds.map((need) => [need.slug, need]));
   const results: FinderResult[] = [];

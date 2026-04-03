@@ -1,14 +1,20 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { FinderWizard } from "@/features/finder-wizard";
+import { getManagedProducts } from "@/lib/catalog-store";
 import { buildMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
   title: "Product Finder",
   path: "/finder",
 });
 
-export default function FinderPage() {
+export default async function FinderPage() {
+  const products = await getManagedProducts();
+
   return (
     <div className="page-shell space-y-8">
       <div className="space-y-3">
@@ -25,7 +31,9 @@ export default function FinderPage() {
           Type to search by make or model, or use structured filters to keep the service list on the right continuously updated.
         </p>
       </div>
-      <FinderWizard />
+      <Suspense fallback={<div className="text-sm text-[var(--muted-foreground)]">Loading finder...</div>}>
+        <FinderWizard products={products} />
+      </Suspense>
     </div>
   );
 }

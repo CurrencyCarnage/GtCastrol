@@ -3,15 +3,20 @@ import { ArrowRight } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
 import { Card, SectionHeading } from "@/components/ui";
+import { getManagedProducts } from "@/lib/catalog-store";
 import { buildMetadata } from "@/lib/seo";
-import { productCategories, productFamilies, products } from "@/lib/site-data";
+import { productCategories, productFamilies } from "@/lib/site-data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
   title: "Product Catalogue",
   path: "/products",
 });
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const products = await getManagedProducts();
+
   return (
     <div className="page-shell space-y-8">
       <div className="space-y-3">
