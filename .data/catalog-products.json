@@ -1,0 +1,42 @@
+{
+  "addedProducts": [],
+  "overriddenProducts": [
+    {
+      "id": "prod-castrol-on-ev-transmission-fluid-d1",
+      "slug": "castrol-on-ev-transmission-fluid-d1",
+      "familySlug": "castrol-on",
+      "categorySlug": "ev-and-hybrid-fluids",
+      "name": "Castrol ON EV Transmission Fluid D1",
+      "headline": "Castrol ON catalogue product for hybrid and EV service and maintenance.",
+      "description": "Imported from Catalogue 2024 - CA.xlsx / Castrol ON worksheet to keep the live catalogue aligned with source files.",
+      "segment": "ev",
+      "featured": false,
+      "applications": [
+        "Hybrid and EV service pathways",
+        "Electrified driveline maintenance"
+      ],
+      "tags": [
+        "Professional use only"
+      ],
+      "packSizes": [
+        {
+          "id": "castrol-on-ev-transmission-fluid-d1-5l",
+          "label": "5L",
+          "volumeLiters": 5,
+          "sku": "CASTROL-ON-5L",
+          "priceLabel": "Request quote",
+          "inventoryStatus": "in-stock"
+        }
+      ],
+      "specs": [
+        {
+          "label": "Spec 1",
+          "value": "Professional use only"
+        }
+      ],
+      "origin": "seed",
+      "hidden": false
+    }
+  ],
+  "deletedProductSlugs": []
+}

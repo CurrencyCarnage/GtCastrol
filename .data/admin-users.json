@@ -1,0 +1,12 @@
+[
+  {
+    "id": "9f88d664-691e-4fd5-b589-8deb02cfdd5a",
+    "username": "Admin",
+    "email": "maisuradzetamazi1@gmail.com",
+    "passwordHash": "da3e5e8c7d862814e3b36aa93288f9749027ed35806ffd3f8f53ea75f075982d",
+    "isActive": true,
+    "confirmationToken": "",
+    "createdAt": "2026-04-03T16:36:26.320Z",
+    "activatedAt": "2026-04-03T16:48:00.000Z"
+  }
+]

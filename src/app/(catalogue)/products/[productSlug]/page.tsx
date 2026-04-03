@@ -2,16 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Button, Card, SectionHeading } from "@/components/ui";
+import { getManagedProduct } from "@/lib/catalog-store";
 import { buildMetadata } from "@/lib/seo";
-import { getProduct, products } from "@/lib/site-data";
 
-export async function generateStaticParams() {
-  return products.map((product) => ({ productSlug: product.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(props: PageProps<"/products/[productSlug]">) {
   const { productSlug } = await props.params;
-  const product = getProduct(productSlug);
+  const product = await getManagedProduct(productSlug);
 
   if (!product) {
     return buildMetadata({ title: "Product", path: `/products/${productSlug}` });
@@ -26,7 +24,7 @@ export async function generateMetadata(props: PageProps<"/products/[productSlug]
 
 export default async function ProductPage(props: PageProps<"/products/[productSlug]">) {
   const { productSlug } = await props.params;
-  const product = getProduct(productSlug);
+  const product = await getManagedProduct(productSlug);
 
   if (!product) notFound();
 

@@ -3,12 +3,11 @@ import { notFound } from "next/navigation";
 
 import { ProductCard } from "@/components/product-card";
 import { Card, SectionHeading } from "@/components/ui";
+import { getManagedProductsByFamily } from "@/lib/catalog-store";
 import { buildMetadata } from "@/lib/seo";
-import { getFamily, getProductsByFamily, productFamilies } from "@/lib/site-data";
+import { getFamily } from "@/lib/site-data";
 
-export async function generateStaticParams() {
-  return productFamilies.map((family) => ({ familySlug: family.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(props: PageProps<"/products/families/[familySlug]">) {
   const { familySlug } = await props.params;
@@ -31,7 +30,7 @@ export default async function FamilyPage(props: PageProps<"/products/families/[f
 
   if (!family) notFound();
 
-  const familyProducts = getProductsByFamily(family.slug);
+  const familyProducts = await getManagedProductsByFamily(family.slug);
 
   return (
     <div className="page-shell space-y-8">
