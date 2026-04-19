@@ -25,6 +25,13 @@ export async function POST(request: Request) {
 
   try {
     if (parsed.data.role === "affiliate") {
+      const latitude = parsed.data.latitude;
+      const longitude = parsed.data.longitude;
+
+      if (typeof latitude !== "number" || !Number.isFinite(latitude) || typeof longitude !== "number" || !Number.isFinite(longitude)) {
+        return NextResponse.json({ message: "Choose your service location on the map before registering." }, { status: 400 });
+      }
+
       await createAffiliateRegistration({
         id: randomUUID(),
         role: "affiliate",
@@ -33,6 +40,9 @@ export async function POST(request: Request) {
         serviceName: parsed.data.serviceName,
         address: parsed.data.address,
         phone: parsed.data.phone,
+        googlePlaceId: parsed.data.googlePlaceId,
+        latitude,
+        longitude,
       });
     }
 

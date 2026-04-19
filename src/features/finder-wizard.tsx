@@ -1,15 +1,15 @@
 "use client";
 
-import { ArrowRight, CarFront, Droplet, IdCard, Search } from "lucide-react";
+import { ArrowRight, CarFront, Droplet, IdCard, LocateFixed, Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { ComingSoonDialog } from "@/components/coming-soon-dialog";
 import { Button, Card, Input, LinkButton, Select } from "@/components/ui";
 import { trackEvent } from "@/lib/analytics";
-import { serviceCenters, vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
+import { vehicleMakes, vehicleModels, vehicleNeeds } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/types/domain";
+import type { Product, ServiceCenter } from "@/types/domain";
 
 type FinderMode = "vehicle" | "plate" | "fluid";
 type FinderVehicleType = "cars-light-duty-trucks" | "commercial-fleet" | "hybrid-ev";
@@ -28,6 +28,9 @@ interface FinderResult {
   centerSlug: string;
   centerName: string;
   centerCity: string;
+  centerAddress: string;
+  centerSource: ServiceCenter["source"];
+  centerGeolocation: ServiceCenter["geolocation"];
   serviceName: string;
   productSlug: string;
   productName: string;
@@ -73,7 +76,13 @@ const needToFamilySlugs: Record<string, string[]> = {
   "fleet-heavy-duty": ["vecton", "crb", "transmax"],
 };
 
-export function FinderWizard({ products }: { products: Product[] }) {
+export function FinderWizard({
+  products,
+  serviceCenters,
+}: {
+  products: Product[];
+  serviceCenters: ServiceCenter[];
+}) {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("query")?.trim() ?? "";
   const [mode, setMode] = useState<FinderMode>("vehicle");
@@ -84,8 +93,10 @@ export function FinderWizard({ products }: { products: Product[] }) {
   const [year, setYear] = useState("");
   const [needSlug, setNeedSlug] = useState("");
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationMessage, setLocationMessage] = useState("Use your location to sort the best nearby service matches first.");
 
-  const allFinderResults = useMemo(() => buildFinderResults(products), [products]);
+  const allFinderResults = useMemo(() => buildFinderResults(products, serviceCenters), [products, serviceCenters]);
 
   const availableMakes = useMemo(() => {
     const makeSlugs = new Set(
@@ -175,8 +186,26 @@ export function FinderWizard({ products }: { products: Product[] }) {
 
         return haystack.includes(normalizedSearch);
       })
-      .sort((a, b) => a.modelName.localeCompare(b.modelName) || a.centerCity.localeCompare(b.centerCity));
-  }, [allFinderResults, vehicleType, selectedMakeSlug, selectedModelSlug, selectedNeedSlug, selectedYear, searchTerm]);
+      .map((result) => ({
+        ...result,
+        distanceKm: userLocation ? calculateDistanceKm(userLocation, result.centerGeolocation) : null,
+      }))
+      .sort((a, b) => {
+        if (a.distanceKm !== null && b.distanceKm !== null) {
+          return a.distanceKm - b.distanceKm;
+        }
+
+        if (a.distanceKm !== null) {
+          return -1;
+        }
+
+        if (b.distanceKm !== null) {
+          return 1;
+        }
+
+        return a.modelName.localeCompare(b.modelName) || a.centerCity.localeCompare(b.centerCity);
+      });
+  }, [allFinderResults, searchTerm, selectedMakeSlug, selectedModelSlug, selectedNeedSlug, selectedYear, userLocation, vehicleType]);
 
   return (
     <>
@@ -321,6 +350,37 @@ export function FinderWizard({ products }: { products: Product[] }) {
           >
             Search
           </Button>
+
+          <div className="space-y-3 rounded-[1.25rem] border border-[rgba(30,42,35,0.12)] bg-white p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm leading-6 text-[var(--muted-foreground)]">{locationMessage}</p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="px-3 py-2 text-xs"
+                onClick={() => {
+                  if (!navigator.geolocation) {
+                    setLocationMessage("Your browser does not support geolocation.");
+                    return;
+                  }
+
+                  navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                      setUserLocation({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                      });
+                      setLocationMessage("Nearest service centers and approved affiliates are now shown first.");
+                    },
+                    () => setLocationMessage("We could not access your location, so results remain unsorted by distance."),
+                  );
+                }}
+              >
+                <LocateFixed className="mr-2 h-4 w-4" />
+                Near me
+              </Button>
+            </div>
+          </div>
         </Card>
 
         <Card tone="panel" className="space-y-4">
@@ -336,10 +396,18 @@ export function FinderWizard({ products }: { products: Product[] }) {
                       </h4>
                       <p className="text-sm text-[var(--muted-foreground)]">{result.serviceName}</p>
                       <p className="text-sm text-[var(--muted-foreground)]">{result.centerName}</p>
+                      <p className="text-sm text-[var(--muted-foreground)]">{result.centerAddress}</p>
                     </div>
-                    <span className="rounded-md border border-[rgba(30,42,35,0.16)] bg-[var(--off-white)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)]">
-                      {result.centerCity}
-                    </span>
+                    <div className="space-y-2 text-right">
+                      <span className="block rounded-md border border-[rgba(30,42,35,0.16)] bg-[var(--off-white)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--muted-foreground)]">
+                        {result.centerSource === "affiliate" ? "Affiliate" : result.centerCity}
+                      </span>
+                      {result.distanceKm !== null ? (
+                        <span className="block text-xs font-semibold uppercase tracking-[0.12em] text-[var(--castrol-red)]">
+                          {result.distanceKm.toFixed(1)} km away
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
 
                   <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--castrol-red)]">
@@ -375,7 +443,7 @@ export function FinderWizard({ products }: { products: Product[] }) {
   );
 }
 
-function buildFinderResults(products: Product[]) {
+function buildFinderResults(products: Product[], serviceCenters: ServiceCenter[]) {
   const makeBySlug = new Map(vehicleMakes.map((make) => [make.slug, make]));
   const needBySlug = new Map(vehicleNeeds.map((need) => [need.slug, need]));
   const results: FinderResult[] = [];
@@ -430,6 +498,9 @@ function buildFinderResults(products: Product[]) {
           centerSlug: center.slug,
           centerName: center.name,
           centerCity: center.city,
+          centerAddress: center.address,
+          centerSource: center.source,
+          centerGeolocation: center.geolocation,
           serviceName: centerService.name,
           productSlug: centerProduct.slug,
           productName: centerProduct.name,
@@ -463,4 +534,25 @@ function parseYearRange(range: string) {
   }
 
   return years;
+}
+
+function calculateDistanceKm(
+  from: { lat: number; lng: number },
+  to: { lat: number; lng: number },
+) {
+  const earthRadiusKm = 6371;
+  const dLat = toRadians(to.lat - from.lat);
+  const dLng = toRadians(to.lng - from.lng);
+  const lat1 = toRadians(from.lat);
+  const lat2 = toRadians(to.lat);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function toRadians(value: number) {
+  return (value * Math.PI) / 180;
 }

@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import type { ComponentPropsWithoutRef } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -91,9 +91,9 @@ export function Badge({
 const fieldBase =
   "w-full rounded-xl border border-[rgba(30,42,35,0.16)] bg-white px-4 py-3 text-sm text-[var(--foreground)] outline-none transition placeholder:text-[rgba(79,91,83,0.74)] focus:border-[var(--brand)] focus:shadow-[0_0_0_3px_rgba(0,154,68,0.14)] disabled:cursor-not-allowed disabled:opacity-45";
 
-export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} className={cn(fieldBase, props.className)} />;
-}
+export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function Input(props, ref) {
+  return <input ref={ref} {...props} className={cn(fieldBase, props.className)} />;
+});
 
 export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
