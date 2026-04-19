@@ -11,6 +11,9 @@ export interface AffiliateRegistrationRecord {
   serviceName: string;
   address: string;
   phone: string;
+  googlePlaceId: string;
+  latitude: number;
+  longitude: number;
   status: "pending" | "approved";
   createdAt: string;
   approvedAt: string | null;

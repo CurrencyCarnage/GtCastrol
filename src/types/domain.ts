@@ -65,11 +65,13 @@ export interface ServiceCenter {
   district: string;
   address: string;
   geolocation: { lat: number; lng: number };
+  googlePlaceId?: string;
   openingHours: string;
   phone: string;
   trustBadges: string[];
   services: ServiceOffering[];
   inventory: Array<{ familySlug: string; status: InventoryStatus }>;
+  source?: "static" | "affiliate";
 }
 
 export interface VehicleMake {

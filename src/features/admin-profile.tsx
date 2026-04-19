@@ -122,6 +122,17 @@ export function AdminProfile({
               <p className="text-sm text-[var(--muted-foreground)]">Email: {affiliate.email}</p>
               <p className="text-sm text-[var(--muted-foreground)]">Address: {affiliate.address}</p>
               <p className="text-sm text-[var(--muted-foreground)]">Phone: {affiliate.phone}</p>
+              <p className="text-sm text-[var(--muted-foreground)]">
+                Coordinates: {affiliate.latitude}, {affiliate.longitude}
+              </p>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${affiliate.latitude},${affiliate.longitude}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex text-sm font-semibold text-[var(--castrol-green-deep)] underline underline-offset-4"
+              >
+                Open pinned location
+              </a>
             </Card>
           ))}
           {!affiliates.length ? <p className="text-sm text-[var(--muted-foreground)]">No affiliate requests yet.</p> : null}

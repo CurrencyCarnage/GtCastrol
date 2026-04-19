@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FinderWizard } from "@/features/finder-wizard";
 import { getManagedProducts } from "@/lib/catalog-store";
 import { buildMetadata } from "@/lib/seo";
+import { getServiceCenters } from "@/lib/service-centers";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function FinderPage() {
-  const products = await getManagedProducts();
+  const [products, serviceCenters] = await Promise.all([getManagedProducts(), getServiceCenters()]);
 
   return (
     <div className="page-shell space-y-8">
@@ -32,7 +33,7 @@ export default async function FinderPage() {
         </p>
       </div>
       <Suspense fallback={<div className="text-sm text-[var(--muted-foreground)]">Loading finder...</div>}>
-        <FinderWizard products={products} />
+        <FinderWizard products={products} serviceCenters={serviceCenters} />
       </Suspense>
     </div>
   );

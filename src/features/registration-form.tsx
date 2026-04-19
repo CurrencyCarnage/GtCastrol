@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
+import { AffiliateLocationPicker } from "@/components/affiliate-location-picker";
 import { Button, Card, Input, LinkButton, Select } from "@/components/ui";
 import { type RegistrationFormValues, registrationSubmissionSchema } from "@/lib/registration";
 
@@ -18,6 +19,7 @@ export function RegistrationForm() {
     control,
     formState: { errors, isSubmitting },
     resetField,
+    setValue,
   } = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSubmissionSchema),
     defaultValues: {
@@ -29,10 +31,14 @@ export function RegistrationForm() {
       serviceName: "",
       address: "",
       phone: "",
+      googlePlaceId: "",
+      latitude: undefined,
+      longitude: undefined,
     },
   });
 
   const role = useWatch({ control, name: "role", defaultValue: "client" });
+  const address = useWatch({ control, name: "address", defaultValue: "" });
   const imagePath = role === "affiliate" ? "/Castrol_Service.png" : "/Client_Picture.jpg";
   const [submissionState, setSubmissionState] = useState<SubmissionState>({
     status: "idle",
@@ -109,6 +115,9 @@ export function RegistrationForm() {
                         resetField("serviceName", { defaultValue: "" });
                         resetField("address", { defaultValue: "" });
                         resetField("phone", { defaultValue: "" });
+                        resetField("googlePlaceId", { defaultValue: "" });
+                        resetField("latitude", { defaultValue: undefined });
+                        resetField("longitude", { defaultValue: undefined });
                       }
                     },
                   })}
@@ -188,15 +197,28 @@ export function RegistrationForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <FieldLabel htmlFor="address" label="Address" required />
-                    <Input
-                      id="address"
-                      placeholder="Enter your address"
-                      {...register("address", {
-                        onChange: () => setSubmissionState({ status: "idle", message: "" }),
-                      })}
+                    <AffiliateLocationPicker
+                      address={address ?? ""}
+                      error={errors.address?.message}
+                      onAddressChange={(nextAddress) => {
+                        setSubmissionState({ status: "idle", message: "" });
+                        setValue("address", nextAddress, { shouldDirty: true, shouldValidate: true });
+                        setValue("googlePlaceId", "", { shouldDirty: true });
+                        setValue("latitude", undefined, { shouldDirty: true, shouldValidate: true });
+                        setValue("longitude", undefined, { shouldDirty: true, shouldValidate: true });
+                      }}
+                      onLocationChange={({ address: nextAddress, googlePlaceId, latitude, longitude }) => {
+                        setSubmissionState({ status: "idle", message: "" });
+                        setValue("address", nextAddress, { shouldDirty: true, shouldValidate: true });
+                        setValue("googlePlaceId", googlePlaceId ?? "", { shouldDirty: true });
+                        setValue("latitude", latitude, { shouldDirty: true, shouldValidate: true });
+                        setValue("longitude", longitude, { shouldDirty: true, shouldValidate: true });
+                      }}
                     />
-                    <FieldError message={errors.address?.message} />
+                    <input type="hidden" {...register("address")} />
+                    <input type="hidden" {...register("googlePlaceId")} />
+                    <input type="hidden" {...register("latitude")} />
+                    <input type="hidden" {...register("longitude")} />
                   </div>
 
                   <div className="space-y-2">

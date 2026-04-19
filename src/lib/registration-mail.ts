@@ -56,6 +56,7 @@ export async function sendRegistrationNotification(values: RegistrationSubmissio
             `Service name: ${values.serviceName}`,
             `Address: ${values.address}`,
             `Phone number: ${values.phone}`,
+            `Coordinates: ${values.latitude}, ${values.longitude}`,
             "",
             "Affiliate registrations should be reviewed and approved by the admin profile.",
           ]
@@ -76,6 +77,7 @@ export async function sendRegistrationNotification(values: RegistrationSubmissio
                     renderRow("Service name", values.serviceName),
                     renderRow("Address", values.address),
                     renderRow("Phone number", values.phone),
+                    renderRow("Coordinates", `${values.latitude}, ${values.longitude}`),
                   ].join("")
                 : ""
             }
