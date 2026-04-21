@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button, Card } from "@/components/ui";
 import type { AffiliateRegistrationRecord } from "@/lib/affiliate-store";
@@ -17,6 +17,28 @@ export function AdminProfile({
   const router = useRouter();
   const [products, setProducts] = useState(initialProducts);
   const [affiliates, setAffiliates] = useState(initialAffiliates);
+  const [activeProductSlug, setActiveProductSlug] = useState<string | null>(null);
+  const productGridRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleOutsidePointer = (event: PointerEvent) => {
+      if (!activeProductSlug) {
+        return;
+      }
+
+      if (productGridRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      setActiveProductSlug(null);
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointer);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsidePointer);
+    };
+  }, [activeProductSlug]);
 
   async function toggleHidden(slug: string, hidden: boolean) {
     const response = await fetch(`/api/admin-products/${slug}`, {
@@ -60,9 +82,13 @@ export function AdminProfile({
 
       <section className="space-y-4">
         <h2 className="font-sans text-2xl font-extrabold uppercase tracking-[0.02em] text-[var(--foreground)]">Products</h2>
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div ref={productGridRef} className="grid gap-4 lg:grid-cols-3">
           {products.map((product) => (
-            <div key={product.slug} className="group relative">
+            <div
+              key={product.slug}
+              className="group relative"
+              onClick={() => setActiveProductSlug((current) => (current === product.slug ? null : product.slug))}
+            >
               <Card tone="surface" className="h-full space-y-4 border-[rgba(30,42,35,0.12)] bg-white text-[var(--foreground)]">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--castrol-green-deep)]">
@@ -82,15 +108,42 @@ export function AdminProfile({
                   ))}
                 </div>
               </Card>
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-[rgba(10,26,18,0.72)] opacity-0 transition group-hover:pointer-events-auto group-hover:opacity-100">
+              <div
+                className={`absolute inset-0 flex items-center justify-center rounded-2xl bg-[rgba(10,26,18,0.72)] transition ${
+                  activeProductSlug === product.slug
+                    ? "pointer-events-auto opacity-100"
+                    : "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
+                }`}
+                onClick={(event) => event.stopPropagation()}
+              >
                 <div className="flex gap-3">
-                  <Button type="button" variant="secondary" onClick={() => toggleHidden(product.slug, !product.hidden)}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      setActiveProductSlug(null);
+                      toggleHidden(product.slug, !product.hidden);
+                    }}
+                  >
                     {product.hidden ? "Hidden" : "Hide"}
                   </Button>
-                  <Button type="button" variant="secondary" onClick={() => router.push(`/adding_product?slug=${product.slug}`)}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      setActiveProductSlug(null);
+                      router.push(`/adding_product?slug=${product.slug}`);
+                    }}
+                  >
                     Edit
                   </Button>
-                  <Button type="button" onClick={() => deleteProduct(product.slug)}>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setActiveProductSlug(null);
+                      deleteProduct(product.slug);
+                    }}
+                  >
                     Delete
                   </Button>
                 </div>

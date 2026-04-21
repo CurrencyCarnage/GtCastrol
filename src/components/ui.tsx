@@ -122,7 +122,7 @@ export function SectionHeading({
         <h2 className={cn("font-display text-3xl uppercase leading-[0.98] tracking-[0.06em] text-[var(--foreground)] sm:text-4xl", titleClassName)}>
           {title}
         </h2>
-        <p className="max-w-2xl text-sm leading-7 text-[var(--muted-foreground)] sm:text-base">{description}</p>
+        {description ? <p className="max-w-2xl text-sm leading-7 text-[var(--muted-foreground)] sm:text-base">{description}</p> : null}
       </div>
     </div>
   );

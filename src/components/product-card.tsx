@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 
@@ -8,11 +9,27 @@ import { trackEvent } from "@/lib/analytics";
 import { useCartStore } from "@/store/cart-store";
 import type { Product } from "@/types/domain";
 
-export function ProductCard({ product }: { product: Product }) {
+type ProductCardProduct = Product & {
+  imagePath?: string;
+};
+
+export function ProductCard({ product }: { product: ProductCardProduct }) {
   const add = useCartStore((state) => state.add);
 
   return (
     <Card className="flex h-full flex-col gap-5">
+      {product.imagePath ? (
+        <div className="relative -mx-2 -mt-2 aspect-[4/3] overflow-hidden rounded-xl border border-white/16 bg-white/10">
+          <Image
+            src={product.imagePath}
+            alt={product.name}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="object-cover transition duration-300 hover:scale-[1.03]"
+            unoptimized
+          />
+        </div>
+      ) : null}
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--castrol-yellow)]">{product.segment}</p>
         <div>

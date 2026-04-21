@@ -10,8 +10,8 @@ import type { ServiceCenter } from "@/types/domain";
 export function ServiceCentersDirectory({ centers }: { centers: ServiceCenter[] }) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const mapElementRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<any>(null);
-  const markersRef = useRef<any[]>([]);
+  const mapRef = useRef<GoogleMapsMap | null>(null);
+  const markersRef = useRef<GoogleMapsMarker[]>([]);
   const [scriptReady, setScriptReady] = useState(false);
   const [selectedCenterId, setSelectedCenterId] = useState(centers[0]?.id ?? "");
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -39,12 +39,7 @@ export function ServiceCentersDirectory({ centers }: { centers: ServiceCenter[] 
         return left.distanceKm - right.distanceKm;
       });
   }, [centers, userLocation]);
-
-  useEffect(() => {
-    if (!selectedCenterId && centersWithDistance.length) {
-      setSelectedCenterId(centersWithDistance[0].center.id);
-    }
-  }, [centersWithDistance, selectedCenterId]);
+  const activeSelectedCenterId = selectedCenterId || centersWithDistance[0]?.center.id || "";
 
   useEffect(() => {
     if (!scriptReady || !apiKey || !window.google || !mapElementRef.current) {
@@ -53,7 +48,7 @@ export function ServiceCentersDirectory({ centers }: { centers: ServiceCenter[] 
 
     const google = window.google;
     const selectedCenter =
-      centersWithDistance.find((entry) => entry.center.id === selectedCenterId)?.center ?? centersWithDistance[0]?.center;
+      centersWithDistance.find((entry) => entry.center.id === activeSelectedCenterId)?.center ?? centersWithDistance[0]?.center;
     const fallbackCenter = selectedCenter?.geolocation ?? { lat: 41.7151, lng: 44.8271 };
 
     if (!mapRef.current) {
@@ -100,7 +95,7 @@ export function ServiceCentersDirectory({ centers }: { centers: ServiceCenter[] 
       mapRef.current.panTo(selectedCenter.geolocation);
       mapRef.current.setZoom(userLocation ? 10 : 8);
     }
-  }, [apiKey, centersWithDistance, scriptReady, selectedCenterId, userLocation]);
+  }, [activeSelectedCenterId, apiKey, centersWithDistance, scriptReady, userLocation]);
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -166,7 +161,7 @@ export function ServiceCentersDirectory({ centers }: { centers: ServiceCenter[] 
 
         <div className="max-h-[38rem] space-y-3 overflow-y-auto pr-1">
           {centersWithDistance.map(({ center, distanceKm }) => {
-            const isSelected = center.id === selectedCenterId;
+            const isSelected = center.id === activeSelectedCenterId;
 
             return (
               <button
