@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -13,6 +14,8 @@ type SubmissionState =
   | { status: "success" | "error"; message: string };
 
 export function RegistrationForm() {
+  const searchParams = useSearchParams();
+  const initialRole = searchParams.get("role") === "affiliate" ? "affiliate" : "client";
   const {
     register,
     handleSubmit,
@@ -23,7 +26,7 @@ export function RegistrationForm() {
   } = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSubmissionSchema),
     defaultValues: {
-      role: "client",
+      role: initialRole,
       username: "",
       email: "",
       password: "",
@@ -37,7 +40,7 @@ export function RegistrationForm() {
     },
   });
 
-  const role = useWatch({ control, name: "role", defaultValue: "client" });
+  const role = useWatch({ control, name: "role", defaultValue: initialRole });
   const address = useWatch({ control, name: "address", defaultValue: "" });
   const imagePath = role === "affiliate" ? "/Castrol_Service.png" : "/Client_Picture.jpg";
   const [submissionState, setSubmissionState] = useState<SubmissionState>({

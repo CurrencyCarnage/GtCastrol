@@ -27,10 +27,10 @@ export function AffiliateLocationPicker({
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const mapElementRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<any>(null);
-  const markerRef = useRef<any>(null);
-  const geocoderRef = useRef<any>(null);
-  const autocompleteRef = useRef<any>(null);
+  const mapRef = useRef<GoogleMapsMap | null>(null);
+  const markerRef = useRef<GoogleMapsMarker | null>(null);
+  const geocoderRef = useRef<GoogleMapsGeocoder | null>(null);
+  const autocompleteRef = useRef<GoogleMapsAutocomplete | null>(null);
   const [scriptReady, setScriptReady] = useState(false);
   const [statusMessage, setStatusMessage] = useState(
     apiKey
@@ -87,22 +87,22 @@ export function AffiliateLocationPicker({
       });
     });
 
-    marker.addListener("dragend", (event: any) => {
+    marker.addListener("dragend", (event: GoogleMapsMapMouseEvent) => {
       const lat = event.latLng?.lat();
       const lng = event.latLng?.lng();
 
-      if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      if (typeof lat !== "number" || !Number.isFinite(lat) || typeof lng !== "number" || !Number.isFinite(lng)) {
         return;
       }
 
       reverseGeocode(lat, lng);
     });
 
-    map.addListener("click", (event: any) => {
+    map.addListener("click", (event: GoogleMapsMapMouseEvent) => {
       const lat = event.latLng?.lat();
       const lng = event.latLng?.lng();
 
-      if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      if (typeof lat !== "number" || !Number.isFinite(lat) || typeof lng !== "number" || !Number.isFinite(lng)) {
         return;
       }
 
@@ -110,8 +110,8 @@ export function AffiliateLocationPicker({
     });
 
     function reverseGeocode(lat: number, lng: number) {
-      geocoder.geocode({ location: { lat, lng } }, (results: any[] = [], status: string) => {
-        if (status !== "OK" || !results.length) {
+      geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+        if (status !== "OK" || !results?.length) {
           updateSelection({
             address,
             latitude: lat,

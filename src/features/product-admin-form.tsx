@@ -77,8 +77,6 @@ export function ProductAdminForm() {
       body: payload,
     });
 
-    const result = (await response.json().catch(() => null)) as { message?: string } | { product?: ManagedProduct } | null;
-
     setSubmitting(false);
 
     if (!response.ok) {

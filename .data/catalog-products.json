@@ -7,7 +7,7 @@
       "familySlug": "castrol-on",
       "categorySlug": "ev-and-hybrid-fluids",
       "name": "Castrol ON EV Transmission Fluid D1",
-      "headline": "Castrol ON catalogue product for hybrid and EV service and maintenance.",
+      "headline": "Castrol ON EV Transmission Fluid D1 available in the admin-managed catalogue.",
       "description": "Imported from Catalogue 2024 - CA.xlsx / Castrol ON worksheet to keep the live catalogue aligned with source files.",
       "segment": "ev",
       "featured": false,
@@ -17,6 +17,12 @@
       ],
       "tags": [
         "Professional use only"
+      ],
+      "specs": [
+        {
+          "label": "Tag 1",
+          "value": "Professional use only"
+        }
       ],
       "packSizes": [
         {
@@ -28,10 +34,123 @@
           "inventoryStatus": "in-stock"
         }
       ],
+      "imagePath": "/uploads/catalog/castrol-on-ev-transmission-fluid-d1.png",
+      "hidden": false,
+      "origin": "seed"
+    },
+    {
+      "id": "prod-castrol-on-ev-transmission-fluid-d2",
+      "slug": "castrol-on-ev-transmission-fluid-d2",
+      "familySlug": "castrol-on",
+      "categorySlug": "ev-and-hybrid-fluids",
+      "name": "Castrol ON EV Transmission Fluid D2",
+      "headline": "Castrol ON catalogue product for hybrid and EV service and maintenance.",
+      "description": "Imported from Catalogue 2024 - CA.xlsx / Castrol ON worksheet to keep the live catalogue aligned with source files.",
+      "segment": "ev",
+      "featured": true,
+      "applications": [
+        "Hybrid and EV service pathways",
+        "Electrified driveline maintenance"
+      ],
+      "tags": [
+        "Suitable for use in the following EV transmissions with dry motors:",
+        "Audi Q3 e-tron, Q4 e-tron, Q5 e-tron",
+        "BYD ATTO 3, HAN, DOLPHIN"
+      ],
+      "packSizes": [
+        {
+          "id": "castrol-on-ev-transmission-fluid-d2-5l",
+          "label": "5L",
+          "volumeLiters": 5,
+          "sku": "CASTROL-ON-5L",
+          "priceLabel": "Request quote",
+          "inventoryStatus": "in-stock"
+        }
+      ],
       "specs": [
         {
           "label": "Spec 1",
-          "value": "Professional use only"
+          "value": "Suitable for use in the following EV transmissions with dry motors:"
+        },
+        {
+          "label": "Spec 2",
+          "value": "Audi Q3 e-tron, Q4 e-tron, Q5 e-tron"
+        },
+        {
+          "label": "Spec 3",
+          "value": "BYD ATTO 3, HAN, DOLPHIN"
+        },
+        {
+          "label": "Spec 4",
+          "value": "Cupra Born"
+        },
+        {
+          "label": "Spec 5",
+          "value": "Hongqi E-HS"
+        },
+        {
+          "label": "Spec 6",
+          "value": "Hycan Z03"
+        },
+        {
+          "label": "Spec 7",
+          "value": "Jaguar i-Pace"
+        },
+        {
+          "label": "Spec 8",
+          "value": "Lixiang One"
+        },
+        {
+          "label": "Spec 9",
+          "value": "Nio EC6, EL6, EL7, ES6, ET5, ET7"
+        },
+        {
+          "label": "Spec 10",
+          "value": "Pininfarina Battista (rear axle)"
+        },
+        {
+          "label": "Spec 11",
+          "value": "Polestar 2"
+        },
+        {
+          "label": "Spec 12",
+          "value": "Rimac Nevera (rear axle)"
+        },
+        {
+          "label": "Spec 13",
+          "value": "Rivian R1S, R1T"
+        },
+        {
+          "label": "Spec 14",
+          "value": "SEAT Mii"
+        },
+        {
+          "label": "Spec 15",
+          "value": "Skoda Citigo-E iV, Enyaq iV"
+        },
+        {
+          "label": "Spec 16",
+          "value": "Smart EQ ForTwo, EQ ForFour"
+        },
+        {
+          "label": "Spec 17",
+          "value": "Volvo XC40 Recharge, C40 Recharge"
+        },
+        {
+          "label": "Spec 18",
+          "value": "VW iD.3, iD.4, iD.5, iD.6, iD.Buzz"
+        },
+        {
+          "label": "Spec 19",
+          "value": "VW e-Up!, e-Golf"
+        },
+        {
+          "label": "Spec 20",
+          "value": "Weltmeister W6"
+        },
+        {
+          "label": "Spec 21",
+          "value": "Xpeng P7, G9"
         }
       ],
       "origin": "seed",
